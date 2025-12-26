@@ -9,9 +9,11 @@ export default function Navbar() {
 
   if (pathname === "/") return null;
   if (pathname === "/auth") return null;
+  if (pathname === "/friend") return null;
+  if (pathname === "/create-group") return null;
 
   return (
-    <nav className="w-full px-3 py-2 flex items-center justify-evenly fixed bottom-0 left-0 right-0 bg-white">
+    <nav className="w-full px-3 py-2 flex items-center justify-evenly fixed bottom-0 left-0 right-0 bg-white rounded-tr-2xl rounded-tl-2xl shadow-xl">
       <Link
         href={"/chats"}
         className={clsx(
@@ -26,8 +28,8 @@ export default function Navbar() {
             pathname === "/chats" ? "/chat-active.svg" : "/chat-inactive.svg"
           }
           alt="Chat Icon"
-          width={30}
-          height={30}
+          width={20}
+          height={20}
           className="object aspect-square"
         />
         <span
@@ -55,8 +57,8 @@ export default function Navbar() {
               : "/groups-inactive.svg"
           }
           alt="Group Icon"
-          width={30}
-          height={30}
+          width={20}
+          height={20}
           className="aspect-square"
         />
         <span
@@ -84,8 +86,8 @@ export default function Navbar() {
               : "/profile-inactive.svg"
           }
           alt="Profile Icon"
-          width={30}
-          height={30}
+          width={20}
+          height={20}
           className="aspect-square"
         />
         <span
@@ -113,8 +115,8 @@ export default function Navbar() {
               : "/settings-inactive.svg"
           }
           alt="Settings Icon"
-          width={30}
-          height={30}
+          width={20}
+          height={20}
           className="aspect-square"
         />
         <span

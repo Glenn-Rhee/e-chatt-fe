@@ -10,7 +10,7 @@ export default function Introduce() {
   const [activeIndex, setActiveIndex] = useState(0);
   const router = useRouter();
   return (
-    <main className="h-dvh w-full bg-lightblue-100">
+    <main className="h-dvh w-dvw bg-lightblue-100">
       <div className="w-full space-y-12 py-20 bg-white h-120 rounded-br-[4rem] rounded-bl-[4rem]">
         <Image
           src={introuduceData[activeIndex].src}
