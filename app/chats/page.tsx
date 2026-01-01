@@ -7,7 +7,7 @@ export default function ChatsPage() {
       {Array.from({ length: 10 }).map((_, index) => (
         <Link
           key={index}
-          href={"/chat/1"}
+          href={"/chats/1"}
           className="flex items-center justify-between active:bg-neutral-100/40 rounded-lg p-2"
         >
           <div className="flex items-center gap-x-2">

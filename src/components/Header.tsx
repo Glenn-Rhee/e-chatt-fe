@@ -1,13 +1,14 @@
 "use client";
 
 import clsx from "clsx";
-import { Plus, Search, User2, UsersRound } from "lucide-react";
+import { Plus, User2, UsersRound } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import Dialog from "./ui/Dialog";
 import Link from "next/link";
 import ShellHeader from "./ShellHeader";
+import SearchBar from "./ui/SearchBar";
 
 export default function Header() {
   const [openSearch, setOpenSearch] = useState(false);
@@ -18,7 +19,7 @@ export default function Header() {
   if (pathname === "/auth") return null;
   if (pathname === "/friend") return null;
   if (pathname === "/create-group") return null;
-
+  if (pathname.includes("/chats/")) return null;
   return (
     <ShellHeader>
       <div className="flex items-center gap-x-2">
@@ -26,23 +27,7 @@ export default function Header() {
         <span className="text-white italic font-bold text-2xl">E-Chat</span>
       </div>
       <div className="flex items-center gap-x-2 relative">
-        <input
-          type="search"
-          className={clsx(
-            "bg-white rounded-xl px-4 py-2 text-sm absolute top-1/2 -translate-y-1/2 right-full transition-all duration-300 ease-in-out me-2",
-            openSearch
-              ? "w-40 translate-x-0"
-              : "w-0 opacity-0 pointer-events-none"
-          )}
-        />
-        <button
-          type="button"
-          onClick={() => {
-            setOpenSearch(true);
-          }}
-        >
-          <Search className="text-white" />
-        </button>
+        <SearchBar openSearch={openSearch} setOpenSearch={setOpenSearch} />
         <button
           className={clsx(
             "transition-all duration-300 ease-in-out",
