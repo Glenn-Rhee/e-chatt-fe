@@ -7,6 +7,7 @@ import { useState } from "react";
 export default function ChatConv() {
   const [openMenu, setOpenMenu] = useState(false);
   const router = useRouter();
+
   return (
     <>
       <header className="flex  items-center justify-between bg-white px-4 pb-3 pt-5 relative">
@@ -16,7 +17,7 @@ export default function ChatConv() {
         <h2 className="text-neutral-900 font-semibold text-lg">Message</h2>
         <button onClick={() => setOpenMenu(true)} className="text-neutral-900">
           <Ellipsis />
-        </button>
+        </button> 
         <Dialog
           isOpen={openMenu}
           onClose={() => setOpenMenu(false)}
