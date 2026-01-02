@@ -20,9 +20,16 @@ export default function ChatConv() {
         <Dialog
           isOpen={openMenu}
           onClose={() => setOpenMenu(false)}
-          className="top-18 right-5 w-60 p-4 bg-linear-to-br text-white from-blue-500 via-blue-400 to-blue-200"
+          className="top-18 right-5 w-60 p-2 bg-linear-to-br text-white from-blue-500 via-blue-400 to-blue-200"
         >
-          cihuy
+          <ul className="flex flex-col gap-y-2 text-white font-semibold text-lg">
+            <li className="px-3 py-1 rounded-md active:bg-white/20 transition-colors duration-100">
+              Search
+            </li>
+            <li className="px-3 py-1 rounded-md active:bg-white/20 transition-colors duration-100">
+              Block
+            </li>
+          </ul>
         </Dialog>
       </header>
       <main></main>
