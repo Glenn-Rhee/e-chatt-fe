@@ -1,40 +1,13 @@
 "use client";
 import FooterChat from "@/src/components/pages/chats/FooterChat";
-import Dialog from "@/src/components/ui/Dialog";
-import { ArrowLeft, Ellipsis } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import HeaderChat from "@/src/components/pages/chats/HeaderChat";
+import MainChat from "@/src/components/pages/chats/MainChat";
 
 export default function ChatConv() {
-  const [openMenu, setOpenMenu] = useState(false);
-  const router = useRouter();
-
   return (
     <div className="h-dvh bg-red-900">
-      <header className="flex items-center justify-between bg-white px-4 pb-3 pt-5 fixed top-0 right-0 left-0">
-        <button onClick={() => router.back()} type="button">
-          <ArrowLeft className="text-neutral-900" />
-        </button>
-        <h2 className="text-neutral-900 font-semibold text-lg">Message</h2>
-        <button onClick={() => setOpenMenu(true)} className="text-neutral-900">
-          <Ellipsis />
-        </button>
-        <Dialog
-          isOpen={openMenu}
-          onClose={() => setOpenMenu(false)}
-          className="top-18 right-5 w-60 p-2 bg-linear-to-br from-blue-500 via-blue-400 to-blue-200"
-        >
-          <ul className="flex flex-col gap-y-2 text-white font-semibold text-lg">
-            <li className="px-3 py-1 rounded-md active:bg-white/20 transition-colors duration-100">
-              Search
-            </li>
-            <li className="px-3 py-1 rounded-md active:bg-white/20 transition-colors duration-100">
-              Block
-            </li>
-          </ul>
-        </Dialog>
-      </header>
-      <main className="bg-neutral-50 h-full mt-15">s</main>
+      <HeaderChat />
+      <MainChat />
       <FooterChat />
     </div>
   );

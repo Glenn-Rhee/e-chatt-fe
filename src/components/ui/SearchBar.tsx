@@ -15,7 +15,7 @@ export default function SearchBar(props: SearchBarProps) {
       <input
         type="search"
         className={clsx(
-          "bg-white rounded-xl px-4 py-2 text-sm absolute top-1/2 -translate-y-1/2 right-full transition-all duration-300 ease-in-out me-2",
+          "bg-white rounded-xl px-4 py-2 text-sm absolute top-1/2 -translate-y-1/2 right-full transition-all duration-300 ease-in-out me-2 focus:outline-none",
           openSearch
             ? "w-40 translate-x-0"
             : "w-0 opacity-0 pointer-events-none"
