@@ -11,7 +11,7 @@ export default function Navbar() {
   if (pathname === "/auth") return null;
   if (pathname === "/friend") return null;
   if (pathname === "/create-group") return null;
-
+  if (pathname.includes("/chats/")) return null;
   return (
     <nav className="w-full px-3 py-2 flex items-center justify-evenly fixed bottom-0 left-0 right-0 bg-white rounded-tr-2xl rounded-tl-2xl shadow-xl">
       <Link

@@ -1,4 +1,5 @@
 "use client";
+import FooterChat from "@/src/components/pages/chats/FooterChat";
 import Dialog from "@/src/components/ui/Dialog";
 import { ArrowLeft, Ellipsis } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -9,19 +10,19 @@ export default function ChatConv() {
   const router = useRouter();
 
   return (
-    <>
-      <header className="flex  items-center justify-between bg-white px-4 pb-3 pt-5 relative">
+    <div className="h-dvh bg-red-900">
+      <header className="flex items-center justify-between bg-white px-4 pb-3 pt-5 fixed top-0 right-0 left-0">
         <button onClick={() => router.back()} type="button">
           <ArrowLeft className="text-neutral-900" />
         </button>
         <h2 className="text-neutral-900 font-semibold text-lg">Message</h2>
         <button onClick={() => setOpenMenu(true)} className="text-neutral-900">
           <Ellipsis />
-        </button> 
+        </button>
         <Dialog
           isOpen={openMenu}
           onClose={() => setOpenMenu(false)}
-          className="top-18 right-5 w-60 p-2 bg-linear-to-br text-white from-blue-500 via-blue-400 to-blue-200"
+          className="top-18 right-5 w-60 p-2 bg-linear-to-br from-blue-500 via-blue-400 to-blue-200"
         >
           <ul className="flex flex-col gap-y-2 text-white font-semibold text-lg">
             <li className="px-3 py-1 rounded-md active:bg-white/20 transition-colors duration-100">
@@ -33,7 +34,8 @@ export default function ChatConv() {
           </ul>
         </Dialog>
       </header>
-      <main></main>
-    </>
+      <main className="bg-neutral-50 h-full mt-15">s</main>
+      <FooterChat />
+    </div>
   );
 }
