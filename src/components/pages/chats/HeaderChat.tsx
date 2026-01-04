@@ -37,7 +37,7 @@ export default function HeaderChat() {
         </Dialog>
       </div>
       <div className="flex items-center justify-between mt-3">
-        <div className="flex items-center gap-x-4">
+        <div className="flex items-center gap-x-2 w-full pe-6">
           <Image
             src={"/prof.jpg"}
             alt="Profile User"
@@ -45,7 +45,7 @@ export default function HeaderChat() {
             height={40}
             className="rounded-full aspect-square object-cover"
           />
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full rounded-sm px-2 py-0.5 active:bg-neutral-50 transition-colors duration-200">
             <h6 className="text-neutral-900 font-semibold">David Wayne</h6>
             <span className="text-neutral-500 text-xs font-medium">
               davidwayne@gmail.com
