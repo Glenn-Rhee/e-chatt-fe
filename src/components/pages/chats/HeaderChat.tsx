@@ -53,7 +53,7 @@ export default function HeaderChat() {
           </div>
         </div>
         <div className="flex items-center">
-          <button className="text-neutral-900">
+          <button className="text-neutral-900 rounded-full active:bg-neutral-50 p-2 transition-colors duration-200">
             <Phone />
           </button>
         </div>
