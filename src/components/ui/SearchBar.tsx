@@ -24,7 +24,6 @@ export default function SearchBar(props: SearchBarProps) {
       <button
         type="button"
         onClick={() => {
-          console.log("cihuy");
           setOpenSearch(true);
         }}
       >
