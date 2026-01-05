@@ -1,13 +1,18 @@
+"use client";
+import ChatConvo from "@/src/components/ChattConvo";
+import { useChattActive } from "@/src/store/useChattActive";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function ChatsPage() {
-  return (
+  const { idChatt, setIdChatt } = useChattActive();
+  return idChatt ? (
+    <ChatConvo />
+  ) : (
     <main className="px-4 pt-3 mb-8 flex flex-col gap-y-3 overflow-y-scroll h-full">
       {Array.from({ length: 10 }).map((_, index) => (
-        <Link
+        <button
+          onClick={() => setIdChatt("123")}
           key={index}
-          href={"/chats/1"}
           className="flex items-center justify-between active:bg-neutral-100/40 rounded-lg p-2"
         >
           <div className="flex items-center gap-x-2">
@@ -19,10 +24,10 @@ export default function ChatsPage() {
               className="aspect-square rounded-full"
             />
             <div className="flex flex-col">
-              <h6 className="text-neutral-900 font-bold text-sm">
+              <h6 className="text-neutral-900 font-bold text-sm text-start">
                 David Wayne
               </h6>
-              <span className="text-xs font-semibold text-neutral-300">
+              <span className="text-xs block font-semibold text-neutral-300">
                 Thank you so much!
               </span>
             </div>
@@ -33,7 +38,7 @@ export default function ChatsPage() {
               5
             </span>
           </div>
-        </Link>
+        </button>
       ))}
     </main>
   );

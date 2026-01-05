@@ -1,21 +1,20 @@
 "use client";
 import Dialog from "@/src/components/ui/Dialog";
 import Separator from "@/src/components/ui/Separator";
+import { useChattActive } from "@/src/store/useChattActive";
 import { ArrowLeft, Ellipsis, Phone } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function HeaderChat() {
   const [openMenu, setOpenMenu] = useState(false);
-  const router = useRouter();
-
+  const { setIdChatt } = useChattActive();
   return (
     <header className="bg-white px-4 pb-3 pt-5 fixed top-0 right-0 left-0 space-y-1">
       <div className="flex items-center justify-between">
-        <button onClick={() => router.back()} type="button">
+        <button onClick={() => setIdChatt(null)} type="button">
           <ArrowLeft className="text-neutral-900" />
-        </button>
+      </button>
         <h2 className="text-neutral-900 font-semibold text-lg">Message</h2>
         <button onClick={() => setOpenMenu(true)} className="text-neutral-900">
           <Ellipsis />
