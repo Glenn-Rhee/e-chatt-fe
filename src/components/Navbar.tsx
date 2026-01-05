@@ -3,9 +3,11 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useChatStore } from "../store/useChattActive";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { idChatt } = useChatStore();
 
   if (pathname === "/") return null;
   if (pathname === "/auth") return null;
@@ -14,7 +16,12 @@ export default function Navbar() {
   if (pathname.includes("/chats/")) return null;
 
   return (
-    <nav className="w-full px-3 py-2 flex items-center justify-evenly fixed bottom-0 left-0 right-0 bg-white rounded-tr-2xl rounded-tl-2xl shadow-xl -z-9999">
+    <nav
+      className={clsx(
+        "w-full px-3 py-2 flex items-center justify-evenly fixed bottom-0 left-0 right-0 bg-white rounded-tr-2xl rounded-tl-2xl shadow-xl",
+        idChatt ? "-z-9999" : ""
+      )}
+    >
       <Link
         href={"/chats"}
         className={clsx(

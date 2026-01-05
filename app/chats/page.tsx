@@ -1,11 +1,11 @@
 "use client";
 import ChatConvo from "@/src/components/ChattConvo";
-import { useChattActive } from "@/src/store/useChattActive";
+import { useChatStore } from "@/src/store/useChattActive";
 import { AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 export default function ChatsPage() {
-  const { setIdChatt, idChatt } = useChattActive();
+  const { setIdChatt, idChatt } = useChatStore();
   return (
     <div className="relative h-dvh">
       <main className="px-4 pt-3 mb-8 flex flex-col gap-y-3 overflow-y-scroll h-full">

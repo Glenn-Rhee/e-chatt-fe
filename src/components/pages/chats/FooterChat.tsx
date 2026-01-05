@@ -3,12 +3,14 @@ import clsx from "clsx";
 import { Camera, File, Images, Plus, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Dialog from "../../ui/Dialog";
+import { useChatStore } from "@/src/store/useChattActive";
 
 export default function FooterChat() {
   const [openMenu, setOpenMenu] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
+  const { isInformationActive } = useChatStore();
   const handleInput = () => {
     const el = textareaRef.current;
     if (!el) return;
@@ -37,8 +39,9 @@ export default function FooterChat() {
     <footer
       ref={footerRef}
       className={clsx(
-        "fixed bottom-0 right-0 left-0 flex items-center gap-x-5 px-6 py-5 bg-white z-99999",
-        `translate-y-[${keyboardOffset}px]`
+        "fixed bottom-0 right-0 left-0 flex items-center gap-x-5 px-6 py-5 bg-white",
+        `translate-y-[${keyboardOffset}px]`,
+        isInformationActive ? "z-999" : ""
       )}
     >
       <button onClick={() => setOpenMenu(true)} className="text-lightblue-500">
