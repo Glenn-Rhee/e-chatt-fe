@@ -37,7 +37,7 @@ export default function FooterChat() {
     <footer
       ref={footerRef}
       className={clsx(
-        "fixed bottom-0 right-0 left-0 flex items-center gap-x-5 px-6 py-5 bg-white z-50",
+        "fixed bottom-0 right-0 left-0 flex items-center gap-x-5 px-6 py-5 bg-white z-99999",
         `translate-y-[${keyboardOffset}px]`
       )}
     >

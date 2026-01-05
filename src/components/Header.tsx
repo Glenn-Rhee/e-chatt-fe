@@ -1,5 +1,4 @@
 "use client";
-
 import clsx from "clsx";
 import { Plus, User2, UsersRound } from "lucide-react";
 import Image from "next/image";
@@ -9,20 +8,17 @@ import Dialog from "./ui/Dialog";
 import Link from "next/link";
 import ShellHeader from "./ShellHeader";
 import SearchBar from "./ui/SearchBar";
-import { useChattActive } from "../store/useChattActive";
 
 export default function Header() {
   const [openSearch, setOpenSearch] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const pathname = usePathname();
-  const { idChatt } = useChattActive();
 
   if (pathname === "/") return null;
   if (pathname === "/auth") return null;
   if (pathname === "/friend") return null;
   if (pathname === "/create-group") return null;
   if (pathname.includes("/chats/")) return null;
-  if (idChatt) return null;
 
   return (
     <ShellHeader>
