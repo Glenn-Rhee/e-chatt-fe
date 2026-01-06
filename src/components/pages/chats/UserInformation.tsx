@@ -1,10 +1,18 @@
 "use client";
 import { useChatStore } from "@/src/store/useChattActive";
-import { ArrowLeft, Phone } from "lucide-react";
+import {
+  ArrowLeft,
+  Ban,
+  ChevronRight,
+  CircleAlert,
+  ImageIcon,
+  Phone,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
 import toast from "react-hot-toast";
+import Separator from "../../ui/Separator";
 
 export default function UserInformation() {
   const { setIsInformationActive } = useChatStore();
@@ -56,6 +64,33 @@ export default function UserInformation() {
         >
           davidwayne@gmail.com
         </span>
+      </div>
+      <Separator className="my-4" />
+      <div className="h-full w-full overflow-y-auto text-neutral-900 flex flex-col gap-y-2">
+        <button className="w-full flex items-center justify-between px-2 py-1.5 active:bg-neutral-50/50 rounded-lg transition-colors duration-200">
+          <div className="gap-x-2 flex items-center">
+            <ImageIcon />
+            <span className="text-[16px] font-semibold">
+              Media, Links, & Documents
+            </span>
+          </div>
+          <div className="flex items-center gap-x-4">
+            <span className="text-[16px] font-semibold">152</span>
+            <ChevronRight />
+          </div>
+        </button>
+        <button className="w-full flex items-center justify-between px-2 py-1.5 active:bg-red-50/50 rounded-lg transition-colors duration-200">
+          <div className="gap-x-2 flex items-center text-red-500">
+            <CircleAlert />
+            <span className="text-[16px] font-semibold">Report</span>
+          </div>
+        </button>
+        <button className="w-full flex items-center justify-between px-2 py-1.5 active:bg-red-50/50 rounded-lg transition-colors duration-200">
+          <div className="gap-x-2 flex items-center text-red-500">
+            <Ban />
+            <span className="text-[16px] font-semibold">Block</span>
+          </div>
+        </button>
       </div>
     </motion.div>
   );

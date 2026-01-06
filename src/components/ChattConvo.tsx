@@ -11,7 +11,7 @@ export default function ChatConvo() {
       animate={{ x: 0 }}
       exit={{ x: "100%" }}
       transition={{ duration: 0.25, ease: "easeInOut" }}
-      className="h-dvh fixed top-0 right-0 left-0 bottom-0"
+      className="h-dvh fixed top-0 right-0 left-0 bottom-0 z-30"
     >
       <HeaderChat />
       <FooterChat />

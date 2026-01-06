@@ -8,13 +8,11 @@ import Dialog from "./ui/Dialog";
 import Link from "next/link";
 import ShellHeader from "./ShellHeader";
 import SearchBar from "./ui/SearchBar";
-import { useChatStore } from "../store/useChattActive";
 
 export default function Header() {
   const [openSearch, setOpenSearch] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const pathname = usePathname();
-  const { idChatt } = useChatStore();
   if (pathname === "/") return null;
   if (pathname === "/auth") return null;
   if (pathname === "/friend") return null;
@@ -22,7 +20,7 @@ export default function Header() {
   if (pathname.includes("/chats/")) return null;
 
   return (
-    <ShellHeader className={clsx(idChatt ? "-z-99999" : "")}>
+    <ShellHeader>
       <div className="flex items-center gap-x-2">
         <Image src={"/logo.png"} alt="Logo E-Chatt" width={35} height={35} />
         <span className="text-white italic font-bold text-2xl">E-Chat</span>
