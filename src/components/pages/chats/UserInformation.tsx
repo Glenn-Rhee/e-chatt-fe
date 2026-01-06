@@ -4,6 +4,7 @@ import { ArrowLeft, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
+import toast from "react-hot-toast";
 
 export default function UserInformation() {
   const { setIsInformationActive } = useChatStore();
@@ -11,6 +12,8 @@ export default function UserInformation() {
   const handlePointerDown = () => {
     timerRef.current = setTimeout(async () => {
       await navigator.clipboard.writeText("davidwayne@gmail.com");
+      toast.dismissAll();
+      toast.success("Success copied!");
     }, 500);
   };
 
