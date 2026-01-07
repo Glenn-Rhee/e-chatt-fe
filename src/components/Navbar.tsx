@@ -7,8 +7,8 @@ import { useChatStore } from "../store/useChattActive";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { idChatt } = useChatStore();
-
+  const { idChatt, hydrated } = useChatStore();
+  if (!hydrated) return null;
   if (pathname === "/") return null;
   if (pathname === "/auth") return null;
   if (pathname === "/friend") return null;
