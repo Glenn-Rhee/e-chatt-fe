@@ -8,11 +8,15 @@ import { useState } from "react";
 import clsx from "clsx";
 import { AnimatePresence } from "framer-motion";
 import UserInformation from "./UserInformation";
+import { useZustandHydrated } from "@/src/hooks/useZustandHydrated";
 
 export default function HeaderChat() {
   const [openMenu, setOpenMenu] = useState(false);
+  const isClient = useZustandHydrated();
   const { setIdChatt, isInformationActive, setIsInformationActive } =
     useChatStore();
+
+  if (!isClient) return null;
 
   return (
     <>
@@ -74,8 +78,8 @@ export default function HeaderChat() {
           </div>
         </div>
       </header>
-      <AnimatePresence>
-        {isInformationActive && <UserInformation />}
+      <AnimatePresence initial={false}>
+        {isInformationActive && isClient && <UserInformation />}
       </AnimatePresence>
     </>
   );
