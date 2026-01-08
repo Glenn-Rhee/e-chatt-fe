@@ -1,12 +1,13 @@
 "use client";
 import ChatConvo from "@/src/components/ChattConvo";
+import UserInformation from "@/src/components/pages/chats/UserInformation";
 import { useZustandHydrated } from "@/src/hooks/useZustandHydrated";
 import { useChatStore } from "@/src/store/useChattActive";
 import { AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 export default function ChatsPage() {
-  const { setIdChatt, idChatt } = useChatStore();
+  const { setIdChatt, idChatt, isInformationActive } = useChatStore();
   const isClient = useZustandHydrated();
   if (!isClient) return null;
 
@@ -49,6 +50,9 @@ export default function ChatsPage() {
       </main>
       <AnimatePresence initial={false}>
         {idChatt && isClient && <ChatConvo />}
+      </AnimatePresence>
+      <AnimatePresence initial={false}>
+        {isInformationActive && isClient && <UserInformation />}
       </AnimatePresence>
     </div>
   );
