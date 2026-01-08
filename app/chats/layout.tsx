@@ -7,7 +7,7 @@ export default function LayoutChat({
   children: React.ReactNode;
 }) {
   return (
-    <main>
+    <main className="h-dvh bg-white px-4 pt-5">
       <HeaderMedia />
       <NavbarTabMedia />
       {children}
