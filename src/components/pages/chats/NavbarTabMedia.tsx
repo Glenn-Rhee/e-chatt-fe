@@ -5,8 +5,10 @@ import { usePathname } from "next/navigation";
 
 export default function NavbarTabMedia() {
   const pathname = usePathname();
+  if (!pathname.includes("/chats/")) return null;
+
   return (
-    <nav className="w-full grid grid-cols-3 gap-x-3 mt-3">
+    <nav className="w-full grid grid-cols-3 gap-x-3 mt-3 px-4">
       <Link
         href={"/chats/media"}
         className={clsx(
