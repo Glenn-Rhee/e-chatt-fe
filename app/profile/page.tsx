@@ -1,4 +1,5 @@
-import { Pencil } from "lucide-react";
+import Button from "@/src/components/Button";
+import { LogOut, Pencil } from "lucide-react";
 import Image from "next/image";
 
 export default function ProfilePage() {
@@ -32,6 +33,14 @@ export default function ProfilePage() {
             john.lennon@gmail.com
           </span>
         </label>
+      </div>
+      <div className="mt-2 flex flex-col gap-y-2">
+        <Button className="flex items-center justify-center py-3 gap-x-2">
+          <Pencil size={14} /> <span>Edit Profile</span>
+        </Button>
+        <button className="bg-red-50 flex items-center text-red-400 justify-center py-3 px-4 gap-x-2 rounded-xl">
+          <LogOut size={14} /> <span>Logout</span>
+        </button>
       </div>
     </div>
   );
