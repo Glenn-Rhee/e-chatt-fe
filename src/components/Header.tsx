@@ -8,14 +8,11 @@ import Dialog from "./ui/Dialog";
 import Link from "next/link";
 import ShellHeader from "./ShellHeader";
 import SearchBar from "./ui/SearchBar";
-import { useChatStore } from "../store/useChattActive";
 
 export default function Header() {
   const [openSearch, setOpenSearch] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const pathname = usePathname();
-  const { hydrated } = useChatStore();
-  if (!hydrated) return null;
   if (pathname === "/") return null;
   if (pathname === "/auth") return null;
   if (pathname === "/friend") return null;
