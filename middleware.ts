@@ -7,11 +7,10 @@ export async function middleware(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   });
   const url = req.nextUrl.pathname;
+
   if (url.includes("/api")) {
-    if (url.includes("/auth") && token) {
-      return NextResponse.json({
-        status: "failed",
-      });
+    if (url.startsWith("/api/auth")) {
+      return NextResponse.next();
     }
   } else {
     if (

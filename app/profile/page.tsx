@@ -1,8 +1,12 @@
+"use client";
 import Button from "@/src/components/Button";
 import { LogOut, Pencil } from "lucide-react";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
+  const router = useRouter();
   return (
     <div className="px-4 pt-3">
       <div className="flex flex-col items-center w-full gap-y-4">
@@ -38,7 +42,13 @@ export default function ProfilePage() {
         <Button className="flex items-center justify-center py-3 gap-x-2">
           <Pencil size={14} /> <span>Edit Profile</span>
         </Button>
-        <button className="bg-red-50 flex items-center text-red-400 justify-center py-3 px-4 gap-x-2 rounded-xl">
+        <button
+          onClick={async () => {
+            await signOut({ redirect: false });
+            router.push("/auth");
+          }}
+          className="bg-red-50 flex items-center text-red-400 justify-center py-3 px-4 gap-x-2 rounded-xl"
+        >
           <LogOut size={14} /> <span>Logout</span>
         </button>
       </div>
