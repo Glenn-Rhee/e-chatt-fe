@@ -1,3 +1,5 @@
+"use client";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 
 export default function LoginWithGoogle() {
@@ -6,7 +8,10 @@ export default function LoginWithGoogle() {
       <span className="text-white text-2xl font-semibold mt-10 block">
         Use authentication to access your account
       </span>
-      <button className="px-3 flex items-center justify-center gap-x-2 py-4 border border-gray-300/60 w-full mt-60 rounded-md">
+      <button
+        onClick={() => signIn("google", { callbackUrl: "/chats" })}
+        className="px-3 flex items-center justify-center gap-x-2 py-4 border border-gray-300/60 w-full mt-60 rounded-md"
+      >
         <Image
           src={"/google-icon.png"}
           alt="Google Icon"
