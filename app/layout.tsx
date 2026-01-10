@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/src/components/Navbar";
 import Header from "@/src/components/Header";
 import { Toaster } from "react-hot-toast";
+import Providers from "@/src/components/Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,10 +34,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
-        <Toaster />
-        <Header />
-        {children}
-        <Navbar />
+        <Providers>
+          <Toaster />
+          <Header />
+          {children}
+          <Navbar />
+        </Providers>
       </body>
     </html>
   );
