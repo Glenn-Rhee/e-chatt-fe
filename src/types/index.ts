@@ -4,3 +4,13 @@ export interface ResponsePayload<T = unknown> {
   message: string;
   data: T;
 }
+
+export interface DataUser {
+  email: string;
+  username: string;
+  userDetail: {
+    birthday: Date | null;
+    gender: "MALE" | "FEMALE" | "UNKNOWN";
+    image_url: string;
+  };
+}
