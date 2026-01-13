@@ -28,27 +28,29 @@ export const authOptions: NextAuthOptions = {
             imageUrl: user.image,
           }),
         });
-        const dataRes = (await res.json()) as ResponsePayload;
+        const dataRes = (await res.json()) as ResponsePayload<{
+          token: string;
+        }>;
         if (dataRes.status === "failed") {
           throw new ResponseError(dataRes.code, dataRes.message);
         }
 
+        user.token = dataRes.data.token;
         return true;
       } catch (error) {
         console.log("Failed send data user!", error);
         return false;
       }
     },
-    async jwt({ token, account }) {
-      if (account) {
-        token.accessToken = account.access_token;
-        token.idToken = account.id_token;
+    async jwt({ token, user }) {
+      if (user?.token) {
+        token.token = user.token;
       }
 
       return token;
     },
     async session({ session, token }) {
-      session.accessToken = token.accessToken;
+      session.user.token = token.token as string;
       return session;
     },
   },

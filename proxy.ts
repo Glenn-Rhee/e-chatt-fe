@@ -7,7 +7,6 @@ export async function proxy(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   });
   const url = req.nextUrl.pathname;
-
   if (url.includes("/api")) {
     if (url.startsWith("/api/auth")) {
       return NextResponse.next();
