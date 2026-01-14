@@ -1,7 +1,7 @@
 "use client";
 import clsx from "clsx";
 import { useRef, useState } from "react";
-
+import { AnimatePresence, motion } from "framer-motion";
 type BottomSheetProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -41,43 +41,53 @@ export default function BottomSheet({
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className={clsx("fixed inset-0 z-50")}>
-      {/* overlay */}
-      <div
-        className="absolute inset-0 bg-black/40"
-        onClick={() => {
-          setTranslateY(0);
-          onClose();
-        }}
-      />
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isOpen ? 1 : 0 }}
+          transition={{ duration: 0.1 }}
+          className={clsx("fixed inset-0 z-50")}
+        >
+          {/* overlay */}
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => {
+              setTranslateY(0);
+              onClose();
+            }}
+          />
 
-      {/* sheet */}
-      <div
-        ref={sheetRef}
-        style={{
-          transform: `translateY(${translateY}px)`,
-          maxHeight,
-          touchAction: "none",
-        }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        className={clsx(
-          "absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl flex flex-col transition-transform duration-100 ease-out",
-          className
-        )}
-      >
-        {/* handle */}
-        <div className="py-3 flex justify-center">
-          <div className="w-14 h-1.5 bg-neutral-300 rounded-full" />
-        </div>
+          {/* sheet */}
+          <motion.div
+            initial={{ y: "100%" }}
+            animate={{ y: translateY }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", stiffness: 260, damping: 30 }}
+            ref={sheetRef}
+            style={{
+              maxHeight,
+              touchAction: "none",
+            }}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            className={clsx(
+              "absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl flex flex-col transition-transform duration-100 ease-out",
+              className
+            )}
+          >
+            {/* handle */}
+            <div className="py-3 flex justify-center">
+              <div className="w-14 h-1.5 bg-neutral-300 rounded-full" />
+            </div>
 
-        {/* content */}
-        <div className="overflow-y-auto px-4 pb-4">{children}</div>
-      </div>
-    </div>
+            {/* content */}
+            <div className="overflow-y-auto px-4 pb-4">{children}</div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
