@@ -1,4 +1,3 @@
-import Button from "@/src/components/Button";
 import LogoutButton from "@/src/components/pages/profile/LogoutButton";
 import { Pencil } from "lucide-react";
 import { Metadata } from "next";
@@ -8,6 +7,7 @@ import { authOptions } from "../api/auth/[...nextauth]/auth-options";
 import { DataUser, ResponsePayload } from "@/src/types";
 import ResponseError from "@/src/error/ResponseError";
 import Error from "@/src/components/ui/Error";
+import EditProfile from "@/src/components/pages/profile/EditProfile";
 
 export const metadata: Metadata = {
   title: "Your profile",
@@ -87,9 +87,7 @@ export default async function ProfilePage() {
           </label>
         </div>
         <div className="mt-2 flex flex-col gap-y-2">
-          <Button className="flex items-center justify-center py-3 gap-x-2">
-            <Pencil size={14} /> <span>Edit Profile</span>
-          </Button>
+          <EditProfile />
           <LogoutButton />
         </div>
       </div>
