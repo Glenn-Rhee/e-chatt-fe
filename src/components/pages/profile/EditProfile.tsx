@@ -9,9 +9,34 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
+import { DataUser } from "@/src/types";
+import { useForm } from "react-hook-form";
+import z from "zod";
+import UserValidation from "@/src/validation/user-validation";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export default function EditProfile() {
+interface EditProfileProps {
+  dataUser: DataUser;
+}
+
+export default function EditProfile(props: EditProfileProps) {
+  const { dataUser } = props;
   const [openSheet, setOpenSheet] = useState(false);
+  const { register, handleSubmit } = useForm<
+    z.infer<typeof UserValidation.EDITSCHEMA>
+  >({
+    resolver: zodResolver(UserValidation.EDITSCHEMA),
+    defaultValues: {
+      birthday: dataUser.userDetail.birthday || new Date(),
+      gender: dataUser.userDetail.gender,
+      username: dataUser.username,
+    },
+  });
+
+  const handleSendData = (data: z.infer<typeof UserValidation.EDITSCHEMA>) => {
+    console.log(data);
+  };
+
   return (
     <>
       <Button
@@ -28,7 +53,7 @@ export default function EditProfile() {
         <h2 className="font-medium text-neutral-900 text-center text-xl">
           Edit Profile
         </h2>
-        <form className="space-y-2">
+        <form onSubmit={handleSubmit(handleSendData)} className="space-y-2">
           <div className="flex flex-col gap-y-1">
             <label htmlFor="username" className="text-sm text-neutral-500">
               Username
@@ -38,6 +63,7 @@ export default function EditProfile() {
               id="username"
               className="px-2 py-1 rounded-sm border border-neutral-100 focus:outline-neutral-300 text-neutral-900"
               placeholder="Your username"
+              {...register("username")}
             />
           </div>
           <div className="flex flex-col gap-y-1">

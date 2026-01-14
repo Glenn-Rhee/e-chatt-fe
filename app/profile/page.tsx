@@ -87,7 +87,7 @@ export default async function ProfilePage() {
           </label>
         </div>
         <div className="mt-2 flex flex-col gap-y-2">
-          <EditProfile />
+          <EditProfile dataUser={data} />
           <LogoutButton />
         </div>
       </div>
