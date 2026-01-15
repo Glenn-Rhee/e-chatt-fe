@@ -10,7 +10,7 @@ import {
   ListboxOptions,
 } from "@headlessui/react";
 import { DataUser } from "@/src/types";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 import UserValidation from "@/src/validation/user-validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +22,7 @@ interface EditProfileProps {
 export default function EditProfile(props: EditProfileProps) {
   const { dataUser } = props;
   const [openSheet, setOpenSheet] = useState(false);
-  const { register, handleSubmit } = useForm<
+  const { register, handleSubmit, control } = useForm<
     z.infer<typeof UserValidation.EDITSCHEMA>
   >({
     resolver: zodResolver(UserValidation.EDITSCHEMA),
@@ -70,49 +70,56 @@ export default function EditProfile(props: EditProfileProps) {
             <label htmlFor="gender" className="text-sm text-neutral-500">
               Gender
             </label>
-            <Listbox value="UNKNOWN">
-              <div className="relative w-full">
-                <ListboxButton
-                  id="gender"
-                  className={
-                    "border border-neutral-100 w-full px-2 py-1 rounded-sm flex items-center justify-between text-neutral-300"
-                  }
-                >
-                  <span>Choose a gender</span>
-                  <ChevronDown />
-                </ListboxButton>
-                <ListboxOptions
-                  className={
-                    "border border-neutral-100 focus:outline-neutral-300 px-2 py-1 rounded-sm space-y-2 absolute z-50 mt-1 w-full bg-white"
-                  }
-                >
-                  <ListboxOption
-                    value={"MALE"}
-                    className={
-                      "border-b border-neutral-100 py-2 ps-2 rounded-sm active:bg-neutral-50 transition-colors duration-100"
-                    }
-                  >
-                    Male
-                  </ListboxOption>
-                  <ListboxOption
-                    value={"FEMALE"}
-                    className={
-                      "border-b border-neutral-100 py-2 ps-2 rounded-sm active:bg-neutral-50 transition-colors duration-100"
-                    }
-                  >
-                    Female
-                  </ListboxOption>
-                  <ListboxOption
-                    value={"UNKNOWN"}
-                    className={
-                      "border-b border-neutral-100 py-2 ps-2 rounded-sm active:bg-neutral-50 transition-colors duration-100"
-                    }
-                  >
-                    Unknown
-                  </ListboxOption>
-                </ListboxOptions>
-              </div>
-            </Listbox>
+            <Controller
+              name="gender"
+              control={control}
+              defaultValue={dataUser.userDetail.gender}
+              render={({ field }) => (
+                <Listbox value={field.value} onChange={field.onChange}>
+                  <div className="relative w-full">
+                    <ListboxButton
+                      id="gender"
+                      className={
+                        "border border-neutral-100 w-full px-2 py-1 rounded-sm flex items-center justify-between text-neutral-300"
+                      }
+                    >
+                      <span>{field.value || "Choose a gender"}</span>
+                      <ChevronDown />
+                    </ListboxButton>
+                    <ListboxOptions
+                      className={
+                        "border border-neutral-100 focus:outline-neutral-300 px-2 py-1 rounded-sm space-y-2 absolute z-50 mt-1 w-full bg-white"
+                      }
+                    >
+                      <ListboxOption
+                        value={"MALE"}
+                        className={
+                          "border-b border-neutral-100 py-2 ps-2 rounded-sm active:bg-neutral-50 transition-colors duration-100"
+                        }
+                      >
+                        Male
+                      </ListboxOption>
+                      <ListboxOption
+                        value={"FEMALE"}
+                        className={
+                          "border-b border-neutral-100 py-2 ps-2 rounded-sm active:bg-neutral-50 transition-colors duration-100"
+                        }
+                      >
+                        Female
+                      </ListboxOption>
+                      <ListboxOption
+                        value={"UNKNOWN"}
+                        className={
+                          "border-b border-neutral-100 py-2 ps-2 rounded-sm active:bg-neutral-50 transition-colors duration-100"
+                        }
+                      >
+                        Unknown
+                      </ListboxOption>
+                    </ListboxOptions>
+                  </div>
+                </Listbox>
+              )}
+            />
           </div>
           <div className="flex flex-col gap-y-1">
             <label className="text-sm text-neutral-500" htmlFor="birthday">
@@ -146,7 +153,9 @@ export default function EditProfile(props: EditProfileProps) {
             <button className="bg-lightblue-50 text-lightblue-600 font-medium p-2 w-full rounded-md">
               Cancel
             </button>
-            <Button className="w-full! rounded-md!">Save</Button>
+            <Button type="submit" className="w-full! rounded-md!">
+              Save
+            </Button>
           </div>
         </form>
       </BottomSheet>
