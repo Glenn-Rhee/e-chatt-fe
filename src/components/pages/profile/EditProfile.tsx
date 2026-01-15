@@ -14,6 +14,7 @@ import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 import UserValidation from "@/src/validation/user-validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import InputsBirthday from "./InputsBirthday";
 
 interface EditProfileProps {
   dataUser: DataUser;
@@ -126,27 +127,7 @@ export default function EditProfile(props: EditProfileProps) {
               Birthday
             </label>
             <div className="grid grid-cols-3 gap-x-2">
-              <input
-                type="text"
-                inputMode="numeric"
-                placeholder="dd"
-                maxLength={2}
-                className="border-neutral-100 border rounded-md focus:outline-neutral-300 px-2 py-1.5 text-center"
-              />
-              <input
-                type="text"
-                inputMode="numeric"
-                placeholder="mm"
-                maxLength={2}
-                className="border-neutral-100 border rounded-md focus:outline-neutral-300 px-2 py-1.5 text-center"
-              />
-              <input
-                type="text"
-                inputMode="numeric"
-                maxLength={4}
-                placeholder="yyyy"
-                className="border-neutral-100 border rounded-md focus:outline-neutral-300 px-2 py-1.5 text-center"
-              />
+              <InputsBirthday />
             </div>
           </div>
           <div className="flex w-full items-center gap-x-3 mt-10">
