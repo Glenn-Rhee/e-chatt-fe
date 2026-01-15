@@ -83,22 +83,31 @@ export default function EditProfile(props: EditProfileProps) {
                 </ListboxButton>
                 <ListboxOptions
                   className={
-                    "border border-neutral-100 focus:outline-neutral-300 px-2 py-1 rounded-sm space-y-2 absolute z-50 mt-1 w-full "
+                    "border border-neutral-100 focus:outline-neutral-300 px-2 py-1 rounded-sm space-y-2 absolute z-50 mt-1 w-full bg-white"
                   }
                 >
                   <ListboxOption
                     value={"MALE"}
-                    className={"border-b border-neutral-100 pb-2"}
+                    className={
+                      "border-b border-neutral-100 py-2 ps-2 rounded-sm active:bg-neutral-50 transition-colors duration-100"
+                    }
                   >
                     Male
                   </ListboxOption>
                   <ListboxOption
                     value={"FEMALE"}
-                    className={"border-b border-neutral-100 pb-2"}
+                    className={
+                      "border-b border-neutral-100 py-2 ps-2 rounded-sm active:bg-neutral-50 transition-colors duration-100"
+                    }
                   >
                     Female
                   </ListboxOption>
-                  <ListboxOption value={"UNKNOWN"} className={"pb-2"}>
+                  <ListboxOption
+                    value={"UNKNOWN"}
+                    className={
+                      "border-b border-neutral-100 py-2 ps-2 rounded-sm active:bg-neutral-50 transition-colors duration-100"
+                    }
+                  >
                     Unknown
                   </ListboxOption>
                 </ListboxOptions>
