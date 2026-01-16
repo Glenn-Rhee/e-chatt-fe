@@ -6,6 +6,6 @@ export default class UserValidation {
     gender: z.enum(["UNKNOWN", "MALE", "FEMALE"], {
       error: "Please fill gender just between Unknwon, Male, and Female",
     }),
-    birthday: z.date({ error: "Please fill birthday properly!" }),
+    birthday: z.date({ error: "Please fill birthday properly!" }).optional(),
   });
 }

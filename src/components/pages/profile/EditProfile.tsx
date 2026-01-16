@@ -28,7 +28,7 @@ export default function EditProfile(props: EditProfileProps) {
   >({
     resolver: zodResolver(UserValidation.EDITSCHEMA),
     defaultValues: {
-      birthday: dataUser.userDetail.birthday || new Date(),
+      birthday: dataUser.userDetail.birthday || undefined,
       gender: dataUser.userDetail.gender,
       username: dataUser.username,
     },
@@ -49,7 +49,7 @@ export default function EditProfile(props: EditProfileProps) {
       <BottomSheet
         isOpen={openSheet}
         onClose={() => setOpenSheet(false)}
-        className="h-[50dvh]"
+        className="h-[45dvh]"
       >
         <h2 className="font-medium text-neutral-900 text-center text-xl">
           Edit Profile
@@ -126,12 +126,25 @@ export default function EditProfile(props: EditProfileProps) {
             <label className="text-sm text-neutral-500" htmlFor="birthday">
               Birthday
             </label>
-            <div className="grid grid-cols-3 gap-x-2">
-              <InputsBirthday />
-            </div>
+            <Controller
+              name="birthday"
+              control={control}
+              render={({ field, fieldState }) => (
+                <div className="grid grid-cols-3 gap-x-2">
+                  <InputsBirthday
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={fieldState.error?.message}
+                  />
+                </div>
+              )}
+            />
           </div>
           <div className="flex w-full items-center gap-x-3 mt-10">
-            <button className="bg-lightblue-50 text-lightblue-600 font-medium p-2 w-full rounded-md">
+            <button
+              onClick={() => setOpenSheet(false)}
+              className="bg-lightblue-50 text-lightblue-600 font-medium p-2 w-full rounded-md"
+            >
               Cancel
             </button>
             <Button type="submit" className="w-full! rounded-md!">

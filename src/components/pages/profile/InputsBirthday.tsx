@@ -1,8 +1,21 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
-export default function InputsBirthday() {
+interface InputsBirthdayProps {
+  value: Date | undefined;
+  onChange: (date?: Date) => void;
+  error?: string;
+}
+
+export default function InputsBirthday(props: InputsBirthdayProps) {
+  const { onChange, value, error } = props;
   const inpuutsRef = useRef<(HTMLInputElement | null)[]>([]);
+  const [local, setLocal] = useState({
+    day: value ? String(value.getDate()).padStart(2, "0") : "",
+    month: value ? String(value.getMonth() + 1).padStart(2, "0") : "",
+    year: value ? String(value.getFullYear()) : "",
+  });
+
   const maxLengths = [2, 2, 4];
 
   const today = new Date();
@@ -28,37 +41,44 @@ export default function InputsBirthday() {
         ref={(ell) => {
           inpuutsRef.current[i] = ell;
         }}
+        value={i === 0 ? local.day : i === 1 ? local.month : local.year}
         onChange={(e) => {
-          e.target.value = e.target.value.replace(/\D/g, "");
-          const day = Number(inpuutsRef.current[0]?.value);
-          const month = Number(inpuutsRef.current[1]?.value);
-          const year = Number(inpuutsRef.current[2]?.value);
+          const v = e.target.value.replace(/\D/g, "");
 
-          if (i === 1 && month > 12) {
-            e.target.value = "";
+          const next = {
+            day: i === 0 ? v : local.day,
+            month: i === 1 ? v : local.month,
+            year: i === 2 ? v : local.year,
+          };
+
+          if (i === 1 && Number(next.month) > 12) return;
+          if (i === 1 && Number(next.year) > minYear) return;
+
+          if (next.day && next.month) {
+            const maxDay = getMaxDay(Number(next.month), Number(next.year));
+            if (Number(next.day) > maxDay) return;
           }
 
-          if (i === 2 && year > minYear) {
-            e.target.value = "";
-          }
+          setLocal(next);
 
-          if (i === 0 && day > 31) {
-            e.target.value = "";
-          }
+          if (
+            next.day.length === 2 &&
+            next.month.length === 2 &&
+            next.year.length === 4
+          ) {
+            const date = new Date(
+              Number(next.month),
+              Number(next.month) - 1,
+              Number(next.day)
+            );
 
-          if (i === 0 && month) {
-            const maxDay = getMaxDay(month, year);
-            if (day > maxDay) {
-              e.target.value = "";
-            }
+            onChange(date);
           }
-          const value = e.target.value;
-
-          if (value.length === maxLengths[i]) {
+          if (v.length === maxLengths[i]) {
             inpuutsRef.current[i + 1]?.focus();
           }
         }}
-        onKeyUp={(e) => {
+        onKeyDown={(e) => {
           if (
             e.key === "Backspace" &&
             (e.target as HTMLInputElement).value.length === 0
@@ -71,6 +91,8 @@ export default function InputsBirthday() {
         maxLength={maxLengths[i]}
         className="border-neutral-100 border rounded-md focus:outline-neutral-300 px-2 py-1.5 text-center"
       />
+
+      {error && <p className="text-red-500 text-sm col-span-3 mt-1"></p>}
     </React.Fragment>
   ));
 }
