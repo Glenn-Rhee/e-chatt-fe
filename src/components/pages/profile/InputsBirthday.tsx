@@ -4,16 +4,15 @@ import React, { useRef, useState } from "react";
 interface InputsBirthdayProps {
   value: Date | undefined;
   onChange: (date?: Date) => void;
-  error?: string;
 }
 
 export default function InputsBirthday(props: InputsBirthdayProps) {
-  const { onChange, value, error } = props;
+  const { onChange, value } = props;
   const inpuutsRef = useRef<(HTMLInputElement | null)[]>([]);
   const [local, setLocal] = useState({
-    day: value ? String(value.getDate()).padStart(2, "0") : "",
-    month: value ? String(value.getMonth() + 1).padStart(2, "0") : "",
-    year: value ? String(value.getFullYear()) : "",
+    day: value ? String(new Date(value).getDate()).padStart(2, "0") : "",
+    month: value ? String(new Date(value).getMonth() + 1).padStart(2, "0") : "",
+    year: value ? String(new Date(value).getFullYear()) : "",
   });
 
   const maxLengths = [2, 2, 4];
@@ -91,8 +90,6 @@ export default function InputsBirthday(props: InputsBirthdayProps) {
         maxLength={maxLengths[i]}
         className="border-neutral-100 border rounded-md focus:outline-neutral-300 px-2 py-1.5 text-center"
       />
-
-      {error && <p className="text-red-500 text-sm col-span-3 mt-1"></p>}
     </React.Fragment>
   ));
 }

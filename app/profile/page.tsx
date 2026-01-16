@@ -13,12 +13,14 @@ export const metadata: Metadata = {
   title: "Your profile",
 };
 
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL!;
+
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
   let data: DataUser | null = null;
   let errorMsg: { code: number; message: string } | null = null;
   try {
-    const res = await fetch("http://localhost:8001/user", {
+    const res = await fetch(baseUrl + "/user", {
       headers: {
         Authorization: session?.user.token as string,
       },

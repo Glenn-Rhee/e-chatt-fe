@@ -9,20 +9,28 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { DataUser } from "@/src/types";
+import { DataUser, ResponsePayload } from "@/src/types";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 import UserValidation from "@/src/validation/user-validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputsBirthday from "./InputsBirthday";
+import toast from "react-hot-toast";
+import ResponseError from "@/src/error/ResponseError";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface EditProfileProps {
   dataUser: DataUser;
 }
 
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL!;
+
 export default function EditProfile(props: EditProfileProps) {
   const { dataUser } = props;
   const [openSheet, setOpenSheet] = useState(false);
+  const router = useRouter();
+  const { data: session } = useSession();
   const { register, handleSubmit, control } = useForm<
     z.infer<typeof UserValidation.EDITSCHEMA>
   >({
@@ -33,9 +41,35 @@ export default function EditProfile(props: EditProfileProps) {
       username: dataUser.username,
     },
   });
+  console.log(dataUser);
 
-  const handleSendData = (data: z.infer<typeof UserValidation.EDITSCHEMA>) => {
-    console.log(data);
+  const handleSendData = async (
+    data: z.infer<typeof UserValidation.EDITSCHEMA>
+  ) => {
+    try {
+      const res = await fetch(baseUrl + "/user", {
+        headers: {
+          Authorization: session?.user.token as string,
+          "Content-Type": "application/json",
+        },
+        method: "PATCH",
+        body: JSON.stringify(data),
+      });
+
+      const resJson = (await res.json()) as ResponsePayload;
+      if (resJson.status === "failed") {
+        throw new ResponseError(resJson.code, resJson.message);
+      }
+
+      toast.success(resJson.message);
+      router.refresh();
+    } catch (error) {
+      if (error instanceof ResponseError) {
+        toast.error(error.message);
+      } else {
+        toast.error("An error occured! Please try again later!");
+      }
+    }
   };
 
   return (
@@ -81,7 +115,7 @@ export default function EditProfile(props: EditProfileProps) {
                     <ListboxButton
                       id="gender"
                       className={
-                        "border border-neutral-100 w-full px-2 py-1 rounded-sm flex items-center justify-between text-neutral-300"
+                        "border border-neutral-100 w-full px-2 py-1 rounded-sm flex items-center justify-between text-neutral-900"
                       }
                     >
                       <span>{field.value || "Choose a gender"}</span>
@@ -89,7 +123,7 @@ export default function EditProfile(props: EditProfileProps) {
                     </ListboxButton>
                     <ListboxOptions
                       className={
-                        "border border-neutral-100 focus:outline-neutral-300 px-2 py-1 rounded-sm space-y-2 absolute z-50 mt-1 w-full bg-white"
+                        "border border-neutral-100 focus:outline-neutral-300 px-2 py-1 rounded-sm space-y-2 absolute z-50 mt-1 w-full bg-white text-neutral-900"
                       }
                     >
                       <ListboxOption
@@ -134,8 +168,12 @@ export default function EditProfile(props: EditProfileProps) {
                   <InputsBirthday
                     value={field.value}
                     onChange={field.onChange}
-                    error={fieldState.error?.message}
                   />
+                  {fieldState.error && (
+                    <p className="text-red-500 text-sm col-span-3 mt-1">
+                      {fieldState.error.message}
+                    </p>
+                  )}
                 </div>
               )}
             />
