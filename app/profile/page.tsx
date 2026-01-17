@@ -8,6 +8,7 @@ import { DataUser, ResponsePayload } from "@/src/types";
 import ResponseError from "@/src/error/ResponseError";
 import Error from "@/src/components/ui/Error";
 import EditProfile from "@/src/components/pages/profile/EditProfile";
+import { getFormatDate } from "@/src/helper/getFormatDate";
 
 export const metadata: Metadata = {
   title: "Your profile",
@@ -80,7 +81,9 @@ export default async function ProfilePage() {
           <label className="text-neutral-500 text-lg font-medium">
             Birthday:{" "}
             <span className="text-lg text-neutral-900">
-              {data.userDetail.birthday ? "" : "-"}
+              {data.userDetail.birthday
+                ? getFormatDate(new Date(data.userDetail.birthday))
+                : "-"}
             </span>
           </label>
           <label className="text-neutral-500 text-lg font-medium">

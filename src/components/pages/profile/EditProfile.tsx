@@ -48,7 +48,6 @@ export default function EditProfile(props: EditProfileProps) {
     data: z.infer<typeof UserValidation.EDITSCHEMA>,
   ) => {
     try {
-      console.log(data);
       const res = await fetch(baseUrl + "/user", {
         headers: {
           Authorization: session?.user.token as string,

@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user }) {
       try {
-        const res = await fetch(`${process.env.BACKEND_URL}/user`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
