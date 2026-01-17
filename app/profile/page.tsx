@@ -1,5 +1,4 @@
 import LogoutButton from "@/src/components/pages/profile/LogoutButton";
-import { Pencil } from "lucide-react";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
@@ -9,6 +8,7 @@ import ResponseError from "@/src/error/ResponseError";
 import Error from "@/src/components/ui/Error";
 import EditProfile from "@/src/components/pages/profile/EditProfile";
 import { getFormatDate } from "@/src/helper/getFormatDate";
+import UpdateProfile from "@/src/components/pages/profile/UpdateProfile";
 
 export const metadata: Metadata = {
   title: "Your profile",
@@ -63,9 +63,7 @@ export default async function ProfilePage() {
               height={130}
               className="rounded-full aspect-square object-cover"
             />
-            <button className="flex items-center justify-center p-1 bg-lightblue-500 text-white rounded-full absolute top-1 right-1">
-              <Pencil size={18} />
-            </button>
+            <UpdateProfile />
           </div>
           <h5 className="text-neutral-900 font-semibold text-xl">
             {data.username}
