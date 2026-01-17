@@ -36,17 +36,19 @@ export default function EditProfile(props: EditProfileProps) {
   >({
     resolver: zodResolver(UserValidation.EDITSCHEMA),
     defaultValues: {
-      birthday: dataUser.userDetail.birthday || undefined,
+      birthday: dataUser.userDetail.birthday
+        ? new Date(dataUser.userDetail.birthday)
+        : undefined,
       gender: dataUser.userDetail.gender,
       username: dataUser.username,
     },
   });
-  console.log(dataUser);
 
   const handleSendData = async (
-    data: z.infer<typeof UserValidation.EDITSCHEMA>
+    data: z.infer<typeof UserValidation.EDITSCHEMA>,
   ) => {
     try {
+      console.log(data);
       const res = await fetch(baseUrl + "/user", {
         headers: {
           Authorization: session?.user.token as string,

@@ -66,9 +66,9 @@ export default function InputsBirthday(props: InputsBirthdayProps) {
             next.year.length === 4
           ) {
             const date = new Date(
-              Number(next.month),
+              Number(next.year),
               Number(next.month) - 1,
-              Number(next.day)
+              Number(next.day),
             );
 
             onChange(date);
