@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.9",
     "@hookform/resolvers": "^5.2.2",
+    "@uploadthing/react": "^7.3.3",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.26",
     "lucide-react": "^0.562.0",
@@ -20,6 +21,7 @@
     "react-dom": "19.2.3",
     "react-hook-form": "^7.71.1",
     "react-hot-toast": "^2.6.0",
+    "uploadthing": "^7.7.4",
     "zod": "^4.3.5",
     "zustand": "^5.0.9"
   },
