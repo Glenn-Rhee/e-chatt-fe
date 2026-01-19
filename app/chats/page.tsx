@@ -1,15 +1,45 @@
 "use client";
 import ChatConvo from "@/src/components/ChattConvo";
 import UserInformation from "@/src/components/pages/chats/UserInformation";
-import { useZustandHydrated } from "@/src/hooks/useZustandHydrated";
+import ResponseError from "@/src/error/ResponseError";
 import { useChatStore } from "@/src/store/useChattActive";
+import { ResponsePayload } from "@/src/types";
 import { AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function ChatsPage() {
   const { setIdChatt, idChatt, isInformationActive } = useChatStore();
-  const isClient = useZustandHydrated();
-  if (!isClient) return null;
+  const { data: session } = useSession();
+  useEffect(() => {
+    if (!baseUrl || !session?.user.token) return;
+    const fetchConv = async () => {
+      console.log("cihuy");
+      try {
+        const res = await fetch(`${baseUrl}/chatts`, {
+          headers: {
+            Authorization: session?.user.token || "",
+          },
+        });
+
+        const data = (await res.json()) as ResponsePayload;
+        if (data.status === "failed") {
+          throw new ResponseError(data.code, data.message);
+        }
+
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed to fetch conversations.");
+      }
+    };
+
+    fetchConv();
+  }, [session]);
 
   return (
     <div className="relative h-dvh">
@@ -49,10 +79,10 @@ export default function ChatsPage() {
         ))}
       </main>
       <AnimatePresence initial={false}>
-        {idChatt && isClient && <ChatConvo />}
+        {idChatt && <ChatConvo />}
       </AnimatePresence>
       <AnimatePresence initial={false}>
-        {isInformationActive && isClient && <UserInformation />}
+        {isInformationActive && <UserInformation />}
       </AnimatePresence>
     </div>
   );
