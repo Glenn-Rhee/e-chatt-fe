@@ -18,7 +18,6 @@ export default function AddFriend() {
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
   const [dataFinded, setDataFinded] = useState<DataFindFriend[] | null>(null);
-
   const findUser = async () => {
     setLoading(true);
     try {
@@ -58,6 +57,7 @@ export default function AddFriend() {
       <main className="px-4 mt-5 space-y-2">
         <input
           value={username}
+          disabled={loading}
           onKeyUp={(e) =>
             e.key === "Enter" && username.trim() !== "" && findUser()
           }
