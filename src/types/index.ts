@@ -25,3 +25,14 @@ export interface DataFindFriend {
   };
   username: string;
 }
+
+export interface DataNotifications {
+  id: string;
+  requester: {
+    username: string;
+    email: string;
+    userDetail: {
+      image_url: string | null;
+    } | null;
+  };
+}
