@@ -24,7 +24,7 @@ interface EditProfileProps {
   dataUser: DataUser;
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL!;
+export const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL!;
 
 export default function EditProfile(props: EditProfileProps) {
   const { dataUser } = props;

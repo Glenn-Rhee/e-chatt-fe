@@ -14,3 +14,14 @@ export interface DataUser {
     image_url: string;
   };
 }
+
+export interface DataFindFriend {
+  id: string;
+  email: string;
+  isFriend: false;
+  isPending: false;
+  userDetail: {
+    image_url: string;
+  };
+  username: string;
+}
