@@ -1,6 +1,6 @@
 "use client";
 import clsx from "clsx";
-import { Plus, User2, UsersRound } from "lucide-react";
+import { Heart, Plus, User2, UsersRound } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -18,6 +18,7 @@ export default function Header() {
   if (pathname === "/friend") return null;
   if (pathname === "/create-group") return null;
   if (pathname.includes("/chats/")) return null;
+  if (pathname === "/notifications") return null;
 
   return (
     <ShellHeader>
@@ -30,7 +31,7 @@ export default function Header() {
         <button
           className={clsx(
             "transition-all duration-300 ease-in-out",
-            openSearch || openMenu ? "rotate-45" : "rotate-0"
+            openSearch || openMenu ? "rotate-45" : "rotate-0",
           )}
           type="button"
           onClick={() => {
@@ -44,6 +45,9 @@ export default function Header() {
         >
           <Plus className="text-white" />
         </button>
+        <Link href={"/notifications"}>
+          <Heart className="text-white" />
+        </Link>
         <Dialog
           isOpen={openMenu}
           onClose={() => setOpenMenu(false)}

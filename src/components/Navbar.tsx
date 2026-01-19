@@ -13,12 +13,13 @@ export default function Navbar() {
   if (pathname === "/friend") return null;
   if (pathname === "/create-group") return null;
   if (pathname.includes("/chats/")) return null;
+  if (pathname === "/notifications") return null;
 
   return (
     <nav
       className={clsx(
         "w-full px-3 py-2 flex items-center justify-evenly fixed bottom-0 left-0 right-0 bg-white rounded-tr-2xl rounded-tl-2xl shadow-xl",
-        idChatt ? "-z-9999" : ""
+        idChatt ? "-z-9999" : "",
       )}
     >
       <Link
@@ -27,7 +28,7 @@ export default function Navbar() {
           "flex flex-col items-center gap-y-1 rounded-xl px-4 py-2",
           pathname === "/chats"
             ? "bg-linear-to-r from-lightblue-500 to-lightblue-600"
-            : ""
+            : "",
         )}
       >
         <Image
@@ -42,7 +43,7 @@ export default function Navbar() {
         <span
           className={clsx(
             "font-medium text-sm",
-            pathname === "/chats" ? "text-white" : "text-neutral-300"
+            pathname === "/chats" ? "text-white" : "text-neutral-300",
           )}
         >
           Chats
@@ -54,7 +55,7 @@ export default function Navbar() {
           "flex flex-col items-center gap-y-1 rounded-xl px-4 py-2",
           pathname === "/groups"
             ? "bg-linear-to-r from-lightblue-500 to-lightblue-600"
-            : ""
+            : "",
         )}
       >
         <Image
@@ -71,7 +72,7 @@ export default function Navbar() {
         <span
           className={clsx(
             "font-medium text-sm",
-            pathname === "/groups" ? "text-white" : "text-neutral-300"
+            pathname === "/groups" ? "text-white" : "text-neutral-300",
           )}
         >
           Groups
@@ -83,7 +84,7 @@ export default function Navbar() {
           "flex flex-col items-center gap-y-1 rounded-xl px-4 py-2",
           pathname === "/profile"
             ? "bg-linear-to-r from-lightblue-500 to-lightblue-600"
-            : ""
+            : "",
         )}
       >
         <Image
@@ -100,7 +101,7 @@ export default function Navbar() {
         <span
           className={clsx(
             "font-medium text-sm",
-            pathname === "/profile" ? "text-white" : "text-neutral-300"
+            pathname === "/profile" ? "text-white" : "text-neutral-300",
           )}
         >
           Profile
@@ -112,7 +113,7 @@ export default function Navbar() {
           "flex flex-col items-center gap-y-1 rounded-xl px-4 py-2",
           pathname === "/settings"
             ? "bg-linear-to-r from-lightblue-500 to-lightblue-600"
-            : ""
+            : "",
         )}
       >
         <Image
@@ -129,7 +130,7 @@ export default function Navbar() {
         <span
           className={clsx(
             "font-medium text-sm",
-            pathname === "/settings" ? "text-white" : "text-neutral-300"
+            pathname === "/settings" ? "text-white" : "text-neutral-300",
           )}
         >
           Settings
