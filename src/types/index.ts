@@ -29,6 +29,7 @@ export interface DataFindFriend {
 export interface DataNotifications {
   id: string;
   requester: {
+    id: string;
     username: string;
     email: string;
     userDetail: {

@@ -1,13 +1,15 @@
 "use client";
+import NotificationsActions from "@/src/components/pages/notifications/NotificationsActions";
 import ShellHeader from "@/src/components/ShellHeader";
 import useGetNotifications from "@/src/hooks/useGetNotifications";
-import { ArrowLeft, Check, Loader2, User, X } from "lucide-react";
+import { ArrowLeft, Loader2, User } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function NotificationsPage() {
   const { loading, dataNotif } = useGetNotifications();
   const router = useRouter();
+
   return (
     <div>
       <ShellHeader className="relative flex justify-center">
@@ -63,14 +65,7 @@ export default function NotificationsPage() {
                     </span>
                   </div>
                 </div>
-                <div className="flex items-center gap-x-2">
-                  <button className="bg-red-500 flex items-center justify-center p-0.5 rounded-full text-white">
-                    <X size={17} />
-                  </button>
-                  <button className="bg-lightblue-500 flex items-center justify-center p-0.5 rounded-full text-white">
-                    <Check size={17} />
-                  </button>
-                </div>
+                <NotificationsActions requesterId={notif.requester.id} />
               </div>
             ))}
           </div>

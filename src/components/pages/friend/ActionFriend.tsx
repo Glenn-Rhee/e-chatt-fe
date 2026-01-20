@@ -38,10 +38,11 @@ export default function ActionFriend(props: ActionFriendProps) {
       toast.success(dataRes.message);
       router.refresh();
     } catch (error) {
+      console.log(error, "cuy");
       if (error instanceof ResponseError) {
         toast.error(error.message);
       } else {
-        toast.error("An error occured! Please try again later!");
+        toast.error("Error cuy");
       }
     } finally {
       setLoading(false);
