@@ -2,13 +2,42 @@
 import NotificationsActions from "@/src/components/pages/notifications/NotificationsActions";
 import ShellHeader from "@/src/components/ShellHeader";
 import useGetNotifications from "@/src/hooks/useGetNotifications";
+import { connectSocket } from "@/src/lib/socket";
 import { ArrowLeft, Loader2, User } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function NotificationsPage() {
   const { loading, dataNotif } = useGetNotifications();
   const router = useRouter();
+  const { data: session } = useSession();
+  useEffect(() => {
+    if (!session?.user.token) return;
+
+    const socket = connectSocket(session.user.token);
+
+    socket.on("connect", () => {
+      console.log("Socket connected:", socket.id);
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Socket disconnected");
+    });
+
+    socket.on("friend:request", (payload) => {
+      console.log("New friend request received:", payload);
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("Socket connect error:", err.message);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [session]);
 
   return (
     <div>
