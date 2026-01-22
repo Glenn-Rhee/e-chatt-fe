@@ -18,8 +18,8 @@ export interface DataUser {
 export interface DataFindFriend {
   id: string;
   email: string;
-  isFriend: false;
-  isPending: false;
+  isFriend: boolean;
+  isPending: boolean;
   userDetail: {
     image_url: string;
   };
@@ -37,3 +37,5 @@ export interface DataNotifications {
     } | null;
   };
 }
+
+export type FriendStatus = "PENDING" | "ACCEPTED" | "REJECTED" | "BLOCKED";

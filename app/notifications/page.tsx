@@ -28,6 +28,10 @@ export default function NotificationsPage() {
       setDataNotifUsers(payload.data);
     });
 
+    socket.on("friend:update", (payload) => {
+      setDataNotifUsers(payload.data);
+    });
+
     socket.on("connect_error", (err) => {
       console.error("Socket connect error:", err.message);
     });

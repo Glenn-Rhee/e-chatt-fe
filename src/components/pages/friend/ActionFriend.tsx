@@ -1,12 +1,13 @@
 "use client";
-import { DataFindFriend, ResponsePayload } from "@/src/types";
+import { DataFindFriend, FriendStatus, ResponsePayload } from "@/src/types";
 import { Clock, Loader2, UserMinus, UserPlus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { baseUrl } from "../profile/EditProfile";
 import { useSession } from "next-auth/react";
 import ResponseError from "@/src/error/ResponseError";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { connectSocket } from "@/src/lib/socket";
 
 interface ActionFriendProps {
   data: DataFindFriend;
@@ -35,6 +36,10 @@ export default function ActionFriend(props: ActionFriendProps) {
       if (dataRes.status === "failed") {
         throw new ResponseError(dataRes.code, dataRes.message);
       }
+      setDataFinded((prev) => ({
+        ...prev,
+        isPending: true,
+      }));
       toast.success(dataRes.message);
       router.refresh();
     } catch (error) {
@@ -48,6 +53,32 @@ export default function ActionFriend(props: ActionFriendProps) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!session?.user.token) return;
+
+    const socket = connectSocket(session.user.token);
+    socket.on("connect", () => {
+      console.log("Socket connected:", socket.id);
+    });
+
+    socket.on("friend:request:resolved", (payload) => {
+      const updatedStatus = payload.data.status as FriendStatus;
+      if (updatedStatus === "ACCEPTED") {
+        setDataFinded((prev) => ({
+          ...prev,
+          isFriend: true,
+          isPending: false,
+        }));
+      } else {
+        setDataFinded((prev) => ({
+          ...prev,
+          isFriend: false,
+          isPending: false,
+        }));
+      }
+    });
+  }, [session?.user.token]);
 
   return (
     <button disabled={loading} onClick={handleActionFriend}>
