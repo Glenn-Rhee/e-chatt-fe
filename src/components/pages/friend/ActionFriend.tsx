@@ -16,6 +16,7 @@ export default function ActionFriend(props: ActionFriendProps) {
   const { data } = props;
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
+  const [dataFinded, setDataFinded] = useState<DataFindFriend>(data);
   const router = useRouter();
   const handleActionFriend = async () => {
     setLoading(true);
@@ -34,7 +35,6 @@ export default function ActionFriend(props: ActionFriendProps) {
       if (dataRes.status === "failed") {
         throw new ResponseError(dataRes.code, dataRes.message);
       }
-
       toast.success(dataRes.message);
       router.refresh();
     } catch (error) {
@@ -53,9 +53,9 @@ export default function ActionFriend(props: ActionFriendProps) {
     <button disabled={loading} onClick={handleActionFriend}>
       {loading ? (
         <Loader2 className="animate-spin text-lightblue-500" size={19} />
-      ) : data.isFriend ? (
+      ) : dataFinded.isFriend ? (
         <UserMinus className="text-red-500" />
-      ) : data.isPending ? (
+      ) : dataFinded.isPending ? (
         <Clock className="text-yellow-500" />
       ) : (
         <UserPlus className="text-lightblue-500" />

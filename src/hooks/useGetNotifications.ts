@@ -10,6 +10,7 @@ export default function useGetNotifications() {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(true);
   const [dataNotif, setDataNotif] = useState<DataNotifications[] | null>(null);
+  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
     const token = session?.user.token;
@@ -31,12 +32,14 @@ export default function useGetNotifications() {
           }
 
           setDataNotif(dataRes.data);
+          setIsError(false);
         } catch (error) {
           if (error instanceof ResponseError) {
             toast.error(error.message);
           } else {
             toast.error("An error occured! Please try again later!");
           }
+          setIsError(true);
         } finally {
           setLoading(false);
         }
@@ -45,5 +48,5 @@ export default function useGetNotifications() {
     }
   }, [session]);
 
-  return { loading, dataNotif };
+  return { loading, dataNotif, isError };
 }

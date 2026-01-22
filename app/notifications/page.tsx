@@ -3,31 +3,29 @@ import NotificationsActions from "@/src/components/pages/notifications/Notificat
 import ShellHeader from "@/src/components/ShellHeader";
 import useGetNotifications from "@/src/hooks/useGetNotifications";
 import { connectSocket } from "@/src/lib/socket";
+import { DataNotifications } from "@/src/types";
 import { ArrowLeft, Loader2, User } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function NotificationsPage() {
-  const { loading, dataNotif } = useGetNotifications();
   const router = useRouter();
   const { data: session } = useSession();
+  const { loading, dataNotif, isError } = useGetNotifications();
+  const [dataNotifUsers, setDataNotifUsers] = useState<DataNotifications[]>(
+    dataNotif || [],
+  );
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDataNotifUsers(dataNotif || []);
     if (!session?.user.token) return;
 
     const socket = connectSocket(session.user.token);
 
-    socket.on("connect", () => {
-      console.log("Socket connected:", socket.id);
-    });
-
-    socket.on("disconnect", () => {
-      console.log("Socket disconnected");
-    });
-
     socket.on("friend:request", (payload) => {
-      console.log("New friend request received:", payload);
+      setDataNotifUsers(payload.data);
     });
 
     socket.on("connect_error", (err) => {
@@ -37,7 +35,7 @@ export default function NotificationsPage() {
     return () => {
       socket.disconnect();
     };
-  }, [session]);
+  }, [session, dataNotif]);
 
   return (
     <div>
@@ -56,8 +54,8 @@ export default function NotificationsPage() {
         <div className="flex items-center justify-center h-[80dvh] w-full">
           <Loader2 size={25} className="text-lightblue-500 animate-spin" />
         </div>
-      ) : dataNotif ? (
-        dataNotif.length === 0 ? (
+      ) : dataNotifUsers ? (
+        dataNotifUsers.length === 0 ? (
           <div className="flex items-center justify-center h-[80dvh] w-full">
             <span className="text-lightblue-500 font-medium text-xl">
               No request found
@@ -65,10 +63,10 @@ export default function NotificationsPage() {
           </div>
         ) : (
           <div className="flex flex-col gap-y-3 mt-2 p-2">
-            {dataNotif.map((notif) => (
+            {dataNotifUsers.map((notif) => (
               <div
                 key={notif.id}
-                className="flex items-center justify-between active:bg-neutral-100/40 rounded-lg p-2"
+                className="flex items-center justify-between rounded-lg p-2"
               >
                 <div className="flex items-center gap-x-2">
                   {notif.requester.userDetail &&
@@ -100,11 +98,13 @@ export default function NotificationsPage() {
           </div>
         )
       ) : (
-        <div className="flex items-center justify-center h-[80dvh] w-full">
-          <span className="text-red-500 font-medium text-xl">
-            An error occurred
-          </span>
-        </div>
+        isError && (
+          <div className="flex items-center justify-center h-[80dvh] w-full">
+            <span className="text-red-500 font-medium text-xl">
+              An error occurred
+            </span>
+          </div>
+        )
       )}
     </div>
   );

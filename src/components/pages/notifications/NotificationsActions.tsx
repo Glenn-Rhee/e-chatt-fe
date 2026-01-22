@@ -55,7 +55,7 @@ export default function NotificationsActions(props: NotificationsActionsProps) {
         onClick={() => handleAction(false)}
         disabled={loading}
         className={clsx(
-          "bg-red-500 flex items-center justify-center p-0.5 rounded-full text-white",
+          "bg-red-500 flex items-center justify-center p-0.5 rounded-full text-white active:scale-95 transition-all duration-200",
           loading && "opacity-50",
         )}
       >
@@ -65,7 +65,7 @@ export default function NotificationsActions(props: NotificationsActionsProps) {
         onClick={() => handleAction(true)}
         disabled={loading}
         className={clsx(
-          "bg-lightblue-500 flex items-center justify-center p-0.5 rounded-full text-white",
+          "bg-lightblue-500 flex items-center justify-center p-0.5 rounded-full text-white active:scale-95 transition-all duration-200",
           loading && "opacity-50",
         )}
       >
