@@ -36,14 +36,22 @@ export default function ActionFriend(props: ActionFriendProps) {
       if (dataRes.status === "failed") {
         throw new ResponseError(dataRes.code, dataRes.message);
       }
-      setDataFinded((prev) => ({
-        ...prev,
-        isPending: true,
-      }));
+      if (dataFinded.isFriend) {
+        setDataFinded((prev) => ({
+          ...prev,
+          isPending: false,
+          isFriend: false,
+        }));
+      } else {
+        setDataFinded((prev) => ({
+          ...prev,
+          isPending: true,
+          isFriend: false,
+        }));
+      }
       toast.success(dataRes.message);
       router.refresh();
     } catch (error) {
-      console.log(error, "cuy");
       if (error instanceof ResponseError) {
         toast.error(error.message);
       } else {

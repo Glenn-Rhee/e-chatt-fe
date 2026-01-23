@@ -39,3 +39,15 @@ export interface DataNotifications {
 }
 
 export type FriendStatus = "PENDING" | "ACCEPTED" | "REJECTED" | "BLOCKED";
+
+export interface FriendshipUser {
+  friendshipId: string;
+  friend: {
+    id: string;
+    email: string;
+    username: string;
+    userDetail: {
+      image_url: string | null;
+    } | null;
+  };
+}
