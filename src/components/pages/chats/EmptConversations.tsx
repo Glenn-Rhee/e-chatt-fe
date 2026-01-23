@@ -2,16 +2,20 @@
 import { useState } from "react";
 import Button from "../../Button";
 import BottomSheet from "../../ui/BottomSheet";
-import { Search } from "lucide-react";
+import { Search, User2 } from "lucide-react";
 import Image from "next/image";
 import ResponseError from "@/src/error/ResponseError";
 import toast from "react-hot-toast";
 import { baseUrl } from "../profile/EditProfile";
 import { useSession } from "next-auth/react";
 import { FriendshipUser, ResponsePayload } from "@/src/types";
+import { useChatStore } from "@/src/store/useChattActive";
+import { AnimatePresence } from "framer-motion";
+import ChatConvo from "../../ChattConvo";
 
 export default function EmptConversations() {
   const [openSheet, setOpenSheet] = useState(false);
+  const { setIdChatt, idChatt } = useChatStore();
   const { data: session } = useSession();
   const [friends, setFriends] = useState<FriendshipUser[] | null>(null);
 
@@ -67,6 +71,10 @@ export default function EmptConversations() {
             friends.map((friend) => (
               <button
                 key={friend.friendshipId}
+                onClick={() => {
+                  setOpenSheet(false);
+                  setIdChatt(friend.friendshipId);
+                }}
                 className="flex items-center gap-x-2 text-start px-2 py-1.5 active:bg-neutral-50 rounded-md transition-colors duration-100 focus:outline-none"
               >
                 {friend.friend.userDetail?.image_url ? (
@@ -75,10 +83,12 @@ export default function EmptConversations() {
                     alt="Profile User"
                     width={40}
                     height={40}
-                    className="aspect-square rounded-full"
+                    className="aspect-square rounded-full object-cover"
                   />
                 ) : (
-                  <p>cihuy</p>
+                  <div className="flex items-center w-10 h-10 justify-center px-1 py-1 rounded-full bg-lightblue-200">
+                    <User2 className="text-white" size={25} />
+                  </div>
                 )}
                 <div className="flex flex-col">
                   <h6 className="text-neutral-900 font-bold text-sm">
@@ -95,6 +105,9 @@ export default function EmptConversations() {
           )}
         </div>
       </BottomSheet>
+      <AnimatePresence initial={false}>
+        {idChatt && <ChatConvo />}
+      </AnimatePresence>
     </div>
   );
 }
