@@ -2,8 +2,7 @@
 import { useState } from "react";
 import Button from "../../Button";
 import BottomSheet from "../../ui/BottomSheet";
-import { Search, User2 } from "lucide-react";
-import Image from "next/image";
+import { Search } from "lucide-react";
 import ResponseError from "@/src/error/ResponseError";
 import toast from "react-hot-toast";
 import { baseUrl } from "../profile/EditProfile";
@@ -13,11 +12,11 @@ import { useChatStore } from "@/src/store/useChattActive";
 import { AnimatePresence } from "framer-motion";
 import ChatConvo from "../../ChattConvo";
 import UserInformation from "./UserInformation";
+import FriendItem from "./FriendItem";
 
 export default function EmptConversations() {
   const [openSheet, setOpenSheet] = useState(false);
-  const { setIdChatt, idChatt, isInformationActive, setInformationUser } =
-    useChatStore();
+  const { idChatt, isInformationActive } = useChatStore();
   const { data: session } = useSession();
   const [friends, setFriends] = useState<FriendshipUser[] | null>(null);
 
@@ -71,41 +70,11 @@ export default function EmptConversations() {
         <div className="flex flex-col gap-y-4 w-full mt-5">
           {friends ? (
             friends.map((friend) => (
-              <button
+              <FriendItem
+                setOpenSheet={() => setOpenSheet(false)}
+                friend={friend}
                 key={friend.friendshipId}
-                onClick={() => {
-                  setOpenSheet(false);
-                  setIdChatt(friend.friendshipId);
-                  setInformationUser({
-                    username: friend.friend.username,
-                    email: friend.friend.email,
-                    image_url: friend.friend.userDetail?.image_url || null,
-                  });
-                }}
-                className="flex items-center gap-x-2 text-start px-2 py-1.5 active:bg-neutral-50 rounded-md transition-colors duration-100 focus:outline-none"
-              >
-                {friend.friend.userDetail?.image_url ? (
-                  <Image
-                    src={friend.friend.userDetail.image_url}
-                    alt="Profile User"
-                    width={40}
-                    height={40}
-                    className="aspect-square rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="flex items-center w-10 h-10 justify-center px-1 py-1 rounded-full bg-lightblue-200">
-                    <User2 className="text-white" size={25} />
-                  </div>
-                )}
-                <div className="flex flex-col">
-                  <h6 className="text-neutral-900 font-bold text-sm">
-                    {friend.friend.username}
-                  </h6>
-                  <span className="text-xs font-semibold text-neutral-300">
-                    {friend.friend.email}
-                  </span>
-                </div>
-              </button>
+              />
             ))
           ) : (
             <p>Loading...</p>

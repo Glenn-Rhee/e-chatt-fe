@@ -41,7 +41,7 @@ export default function FooterChat() {
       className={clsx(
         "fixed bottom-0 right-0 left-0 flex items-center gap-x-5 px-6 py-5 bg-white",
         `translate-y-[${keyboardOffset}px]`,
-        isInformationActive ? "-z-999" : ""
+        isInformationActive ? "-z-999" : "",
       )}
     >
       <button onClick={() => setOpenMenu(true)} className="text-lightblue-500">
@@ -75,7 +75,7 @@ export default function FooterChat() {
         placeholder="Type a message..."
       />
       <button className="rounded-full bg-lightblue-500 flex items-center justify-center p-2 text-white">
-        <Send />
+        <Send size={19} />
       </button>
     </footer>
   );
