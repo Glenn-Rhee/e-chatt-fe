@@ -12,10 +12,12 @@ import { FriendshipUser, ResponsePayload } from "@/src/types";
 import { useChatStore } from "@/src/store/useChattActive";
 import { AnimatePresence } from "framer-motion";
 import ChatConvo from "../../ChattConvo";
+import UserInformation from "./UserInformation";
 
 export default function EmptConversations() {
   const [openSheet, setOpenSheet] = useState(false);
-  const { setIdChatt, idChatt } = useChatStore();
+  const { setIdChatt, idChatt, isInformationActive, setInformationUser } =
+    useChatStore();
   const { data: session } = useSession();
   const [friends, setFriends] = useState<FriendshipUser[] | null>(null);
 
@@ -74,6 +76,11 @@ export default function EmptConversations() {
                 onClick={() => {
                   setOpenSheet(false);
                   setIdChatt(friend.friendshipId);
+                  setInformationUser({
+                    username: friend.friend.username,
+                    email: friend.friend.email,
+                    image_url: friend.friend.userDetail?.image_url || null,
+                  });
                 }}
                 className="flex items-center gap-x-2 text-start px-2 py-1.5 active:bg-neutral-50 rounded-md transition-colors duration-100 focus:outline-none"
               >
@@ -107,6 +114,9 @@ export default function EmptConversations() {
       </BottomSheet>
       <AnimatePresence initial={false}>
         {idChatt && <ChatConvo />}
+      </AnimatePresence>
+      <AnimatePresence initial={false}>
+        {isInformationActive && <UserInformation />}
       </AnimatePresence>
     </div>
   );

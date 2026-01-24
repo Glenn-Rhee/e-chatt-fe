@@ -7,11 +7,17 @@ interface UseChatStore {
   isInformationActive: boolean;
   isShowMedia: boolean;
   hydrated: boolean;
+  informationsUser: {
+    username: string;
+    email: string;
+    image_url: string | null;
+  } | null;
 
   setIdChatt: (id: string | null) => void;
   setIsInformationActive: (v: boolean) => void;
   setaIsShowMedia: (v: boolean) => void;
   setHydrated: (v: boolean) => void;
+  setInformationUser: (v: UseChatStore["informationsUser"]) => void;
 }
 
 export const useChatStore = create<UseChatStore>()(
@@ -19,6 +25,7 @@ export const useChatStore = create<UseChatStore>()(
     (set) => ({
       // Persisted
       idChatt: null,
+      informationsUser: null,
 
       // Runtime-only
       isInformationActive: false,
@@ -26,6 +33,7 @@ export const useChatStore = create<UseChatStore>()(
       hydrated: false,
 
       // Actions
+      setInformationUser: (v) => set({ informationsUser: v }),
       setIdChatt: (id) => set({ idChatt: id }),
       setIsInformationActive: (v) => set({ isInformationActive: v }),
       setaIsShowMedia: (v) => set({ isShowMedia: v }),
@@ -37,11 +45,12 @@ export const useChatStore = create<UseChatStore>()(
 
       partialize: (state) => ({
         idChatt: state.idChatt,
+        informationsUser: state.informationsUser,
       }),
 
       onRehydrateStorage: () => (state) => {
         state?.setHydrated(true);
       },
-    }
-  )
+    },
+  ),
 );

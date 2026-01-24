@@ -7,6 +7,7 @@ import {
   CircleAlert,
   ImageIcon,
   Phone,
+  User2,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -16,7 +17,7 @@ import Separator from "../../ui/Separator";
 import Link from "next/link";
 
 export default function UserInformation() {
-  const { setIsInformationActive } = useChatStore();
+  const { setIsInformationActive, informationsUser } = useChatStore();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const handlePointerDown = () => {
     timerRef.current = setTimeout(async () => {
@@ -47,15 +48,21 @@ export default function UserInformation() {
         </button>
       </header>
       <div className="w-full flex flex-col items-center mt-4">
-        <Image
-          src={"/prof.jpg"}
-          alt="Profile user"
-          width={150}
-          height={150}
-          className="rounded-full aspect-square object-cover"
-        />
+        {informationsUser && informationsUser.image_url ? (
+          <Image
+            src={informationsUser.image_url}
+            alt="Profile user"
+            width={150}
+            height={150}
+            className="rounded-full aspect-square object-cover"
+          />
+        ) : (
+          <div className="flex items-center w-38 h-38 justify-center px-1 py-1 rounded-full bg-lightblue-200 aspect-square">
+            <User2 className="text-white" size={120} />
+          </div>
+        )}
         <h5 className="text-[22px] text-neutral-900 font-semibold mt-2">
-          David Wayne
+          {informationsUser ? informationsUser.username : "-"}
         </h5>
         <span
           onPointerUp={handlePointerUp}
@@ -63,7 +70,7 @@ export default function UserInformation() {
           onPointerDown={handlePointerDown}
           className="text-lg text-neutral-900 select-none"
         >
-          davidwayne@gmail.com
+          {informationsUser ? informationsUser.email : "-"}
         </span>
       </div>
       <Separator className="my-4" />
