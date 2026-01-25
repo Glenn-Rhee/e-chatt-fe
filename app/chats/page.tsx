@@ -3,7 +3,7 @@ import ChattItem from "@/src/components/pages/chats/ChattItem";
 import EmptConversations from "@/src/components/pages/chats/EmptConversations";
 
 export default function ChatsPage() {
-  const dataChats = [];
+  const dataChats = [0];
 
   return (
     <div className="relative h-dvh">

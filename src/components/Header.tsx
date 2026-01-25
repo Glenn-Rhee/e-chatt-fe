@@ -54,6 +54,15 @@ export default function Header() {
           className="top-18 right-5 w-60 p-4"
         >
           <div className="flex flex-col gap-y-4">
+            <button
+              type="button"
+              className="flex items-center gap-x-3 active:bg-neutral-100/40 p-2 rounded-md transition-colors duration-200 ease-in-out"
+            >
+              <Plus className="text-neutral-300" />
+              <span className="text-neutral-900 font-medium text-sm pointer-events-none">
+                Add chatt
+              </span>
+            </button>
             <Link
               href={"/friend"}
               className="flex items-center gap-x-3 active:bg-neutral-100/40 p-2 rounded-md transition-colors duration-200 ease-in-out"

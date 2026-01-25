@@ -30,7 +30,7 @@ export default function ChattItem() {
         if (data.status === "failed") {
           throw new ResponseError(data.code, data.message);
         }
-
+        console.log(data)
         setChatts([]);
       } catch (error) {
         console.log(error);
