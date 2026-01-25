@@ -18,6 +18,7 @@ export default function FooterChat() {
   const { isInformationActive, informationsUser } = useChatStore();
   const [value, setValue] = useState("");
   const { data: session } = useSession();
+  const [isCooldown, setIsCooldow] = useState(false);
   const handleInput = () => {
     const el = textareaRef.current;
     if (!el) return;
@@ -46,6 +47,8 @@ export default function FooterChat() {
   const handleSendMessage = async () => {
     const msg = value.trim();
     if (msg === "") return;
+    if (isCooldown) return;
+    setIsCooldow(true);
     try {
       const res = await fetch(baseUrl + "/chatt", {
         method: "POST",
@@ -71,6 +74,8 @@ export default function FooterChat() {
       } else {
         toast.error("Something went wrong.");
       }
+    } finally {
+      setIsCooldow(false);
     }
   };
 

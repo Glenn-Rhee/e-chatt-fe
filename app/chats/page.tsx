@@ -1,18 +1,23 @@
 "use client";
 import ChattItem from "@/src/components/pages/chats/ChattItem";
 import EmptConversations from "@/src/components/pages/chats/EmptConversations";
-
+import useGetConversations from "@/src/hooks/useGetConversations";
+import { Loader2 } from "lucide-react";
 export default function ChatsPage() {
-  const dataChats = [0];
-
+  const { dataConv, isLoading } = useGetConversations();
   return (
     <div className="relative h-dvh">
       <main className="px-4 pt-3 mb-8 flex flex-col gap-y-3 overflow-y-scroll h-full">
-        {dataChats.length === 0 ? (
+        {isLoading ? (
+          <div className="w-full flex items-center justify-center h-[80dvh] flex-col gap-y-2">
+            <Loader2 className="text-lightblue-500 animate-spin" size={32} />
+          </div>
+        ) : dataConv && dataConv.length === 0 ? (
           <EmptConversations />
         ) : (
-          Array.from({ length: 10 }).map((_, index) => (
-            <ChattItem key={index} />
+          dataConv &&
+          dataConv.map((data, index) => (
+            <ChattItem key={index} dataConv={data} />
           ))
         )}
       </main>

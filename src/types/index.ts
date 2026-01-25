@@ -15,39 +15,41 @@ export interface DataUser {
   };
 }
 
-export interface DataFindFriend {
-  id: string;
-  email: string;
+export interface DataFindFriend extends User {
   isFriend: boolean;
   isPending: boolean;
-  userDetail: {
-    image_url: string;
-  };
-  username: string;
 }
 
 export interface DataNotifications {
   id: string;
-  requester: {
-    id: string;
-    username: string;
-    email: string;
-    userDetail: {
-      image_url: string | null;
-    } | null;
-  };
+  requester: User;
 }
 
 export type FriendStatus = "PENDING" | "ACCEPTED" | "REJECTED" | "BLOCKED";
 
+type User = {
+  id: string;
+  username: string;
+  email: string;
+  userDetail: {
+    image_url: string | null;
+  } | null;
+};
+
 export interface FriendshipUser {
   friendshipId: string;
-  friend: {
-    id: string;
-    email: string;
-    username: string;
-    userDetail: {
-      image_url: string | null;
-    } | null;
-  };
+  friend: User;
 }
+
+export interface DataConversation {
+  convId: string;
+  userFrom: User;
+  message: Message;
+}
+
+type Message = {
+  content: string;
+  createdAt: string;
+  isRead: boolean;
+  senderId: string;
+};

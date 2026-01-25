@@ -46,7 +46,7 @@ export default function EmptConversations() {
   }
 
   return (
-    <div className="w-ful flex items-center justify-center h-[80dvh] flex-col gap-y-2">
+    <div className="w-full flex items-center justify-center h-[80dvh] flex-col gap-y-2">
       <span className="text-neutral-700 font-medium text-lg">
         No conversations yet.
       </span>

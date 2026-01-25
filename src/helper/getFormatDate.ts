@@ -5,3 +5,10 @@ export function getFormatDate(date: Date) {
 
   return `${day}-${month}-${year}`;
 }
+
+export function getFormatTime(date: Date) {
+  const hour = String(date.getHours()).padStart(2, "0");
+  const minute = String(date.getMinutes()).padStart(2, "0");
+
+  return `${hour}:${minute}`;
+}
