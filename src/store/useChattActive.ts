@@ -8,6 +8,7 @@ interface UseChatStore {
   isShowMedia: boolean;
   hydrated: boolean;
   informationsUser: {
+    id: string;
     username: string;
     email: string;
     image_url: string | null;

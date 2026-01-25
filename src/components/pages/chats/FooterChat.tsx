@@ -4,13 +4,20 @@ import { Camera, File, Images, Plus, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Dialog from "../../ui/Dialog";
 import { useChatStore } from "@/src/store/useChattActive";
+import { useSession } from "next-auth/react";
+import { ResponsePayload } from "@/src/types";
+import ResponseError from "@/src/error/ResponseError";
+import toast from "react-hot-toast";
+import { baseUrl } from "../profile/EditProfile";
 
 export default function FooterChat() {
   const [openMenu, setOpenMenu] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
-  const { isInformationActive } = useChatStore();
+  const { isInformationActive, informationsUser } = useChatStore();
+  const [value, setValue] = useState("");
+  const { data: session } = useSession();
   const handleInput = () => {
     const el = textareaRef.current;
     if (!el) return;
@@ -35,6 +42,38 @@ export default function FooterChat() {
       viewport.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const handleSendMessage = async () => {
+    const msg = value.trim();
+    if (msg === "") return;
+    try {
+      const res = await fetch(baseUrl + "/chatt", {
+        method: "POST",
+        headers: {
+          Authorization: session?.user.token || "",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          targetId: informationsUser?.id,
+          message: msg,
+        }),
+      });
+
+      const dataRes = (await res.json()) as ResponsePayload;
+      if (dataRes.status === "failed") {
+        throw new ResponseError(dataRes.code, dataRes.message);
+      }
+      console.log("Message sent successfully: ", dataRes);
+      setValue("");
+    } catch (error) {
+      if (error instanceof ResponseError) {
+        toast.error(error.message);
+      } else {
+        toast.error("Something went wrong.");
+      }
+    }
+  };
+
   return (
     <footer
       ref={footerRef}
@@ -67,14 +106,32 @@ export default function FooterChat() {
       <textarea
         rows={1}
         ref={textareaRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
         onInput={handleInput}
+        onKeyUp={(e) => {
+          if (e.key === "Enter" && e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+          }
+        }}
         onFocus={() =>
           window.visualViewport?.dispatchEvent(new Event("resize"))
         }
         className="w-full resize-none max-h-32 bg-transparent py-1 ps-2 text-sm focus:outline-none text-neutral-800"
         placeholder="Type a message..."
       />
-      <button className="rounded-full bg-lightblue-500 flex items-center justify-center p-2 text-white">
+      <button
+        disabled={value.trim() === ""}
+        onClick={handleSendMessage}
+        type="button"
+        className={clsx(
+          "rounded-full bg-lightblue-500 flex items-center justify-center p-2 text-white",
+          {
+            "opacity-50 cursor-not-allowed": value.trim() === "",
+          },
+        )}
+      >
         <Send size={19} />
       </button>
     </footer>

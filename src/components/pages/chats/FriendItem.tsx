@@ -34,13 +34,13 @@ export default function FriendItem(props: FriendItemProps) {
         throw new ResponseError(dataRes.code, dataRes.message);
       }
 
-      console.log("Conversation started", dataRes.data);
       setOpenSheet();
       setIdChatt(friend.friendshipId);
       setInformationUser({
         username: friend.friend.username,
         email: friend.friend.email,
         image_url: friend.friend.userDetail?.image_url || null,
+        id: friend.friend.id,
       });
     } catch (error) {
       if (error instanceof ResponseError) {
