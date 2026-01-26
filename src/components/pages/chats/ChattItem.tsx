@@ -32,8 +32,8 @@ export default function ChattItem(props: ChattItemProps) {
               className="aspect-square rounded-full object-cover"
             />
           ) : (
-            <div className="flex items-center w-50 h-50 justify-center px-1 py-1 rounded-full bg-lightblue-200">
-              <User2 className="text-white" size={120} />
+            <div className="flex items-center w-10 h-10 justify-center px-1 py-1 rounded-full bg-lightblue-200">
+              <User2 className="text-white" size={25} />
             </div>
           )}
           <div className="flex flex-col">
