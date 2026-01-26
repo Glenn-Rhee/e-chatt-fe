@@ -15,8 +15,8 @@ import UserInformation from "./UserInformation";
 import FriendItem from "./FriendItem";
 
 export default function EmptConversations() {
-  const [openSheet, setOpenSheet] = useState(false);
-  const { idChatt, isInformationActive } = useChatStore();
+  const { idChatt, isInformationActive, openSheetFriend, setOpenSheetFriend } =
+    useChatStore();
   const { data: session } = useSession();
   const [friends, setFriends] = useState<FriendshipUser[] | null>(null);
 
@@ -35,7 +35,7 @@ export default function EmptConversations() {
 
       setFriends(dataRes.data);
 
-      setOpenSheet(true);
+      setOpenSheetFriend(true);
     } catch (error) {
       if (error instanceof ResponseError) {
         toast.error(error.message);
@@ -52,8 +52,8 @@ export default function EmptConversations() {
       </span>
       <Button onClick={handleButtonStart}>Start conversations</Button>
       <BottomSheet
-        isOpen={openSheet}
-        onClose={() => setOpenSheet(false)}
+        isOpen={openSheetFriend}
+        onClose={() => setOpenSheetFriend(false)}
         className="pb-2"
       >
         <h2 className="text-center text-neutral-800 font-medium mb-4 text-lg">
@@ -71,7 +71,7 @@ export default function EmptConversations() {
           {friends ? (
             friends.map((friend) => (
               <FriendItem
-                setOpenSheet={() => setOpenSheet(false)}
+                setOpenSheet={() => setOpenSheetFriend(false)}
                 friend={friend}
                 key={friend.friendshipId}
               />
