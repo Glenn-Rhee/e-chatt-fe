@@ -13,7 +13,9 @@ interface UseChatStore {
     email: string;
     image_url: string | null;
   } | null;
+  openSheetFriend: boolean;
 
+  setOpenSheetFriend: (v: boolean) => void;
   setIdChatt: (id: string | null) => void;
   setIsInformationActive: (v: boolean) => void;
   setaIsShowMedia: (v: boolean) => void;
@@ -32,8 +34,10 @@ export const useChatStore = create<UseChatStore>()(
       isInformationActive: false,
       isShowMedia: false,
       hydrated: false,
+      openSheetFriend: false,
 
       // Actions
+      setOpenSheetFriend: (v) => set({ openSheetFriend: v }),
       setInformationUser: (v) => set({ informationsUser: v }),
       setIdChatt: (id) => set({ idChatt: id }),
       setIsInformationActive: (v) => set({ isInformationActive: v }),
