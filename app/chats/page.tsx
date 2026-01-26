@@ -4,7 +4,7 @@ import EmptConversations from "@/src/components/pages/chats/EmptConversations";
 import useGetConversations from "@/src/hooks/useGetConversations";
 import { Loader2 } from "lucide-react";
 export default function ChatsPage() {
-  const { dataConv, isLoading } = useGetConversations();
+  const { isLoading, dataConv } = useGetConversations();
   return (
     <div className="relative h-dvh">
       <main className="px-4 pt-3 mb-8 flex flex-col gap-y-3 overflow-y-scroll h-full">
