@@ -24,7 +24,12 @@ export default function HeaderChat() {
         )}
       >
         <div className="flex items-center justify-between">
-          <button onClick={() => setInformationUser(null)} type="button">
+          <button
+            onClick={() => {
+              setInformationUser(null);
+            }}
+            type="button"
+          >
             <ArrowLeft className="text-neutral-900" />
           </button>
           <h2 className="text-neutral-900 font-semibold text-lg">Message</h2>

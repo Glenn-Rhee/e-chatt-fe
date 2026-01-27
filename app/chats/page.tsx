@@ -16,6 +16,7 @@ export default function ChatsPage() {
           <EmptConversations />
         ) : (
           dataConv &&
+          dataConv.length > 0 &&
           dataConv.map((data, index) => (
             <ChattItem key={index} dataConv={data} />
           ))

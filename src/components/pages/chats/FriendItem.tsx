@@ -7,6 +7,7 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import { baseUrl } from "../profile/EditProfile";
 import { useSession } from "next-auth/react";
+import { getMessageUser } from "./ChattItem";
 
 interface FriendItemProps {
   friend: FriendshipUser;
@@ -14,7 +15,7 @@ interface FriendItemProps {
 }
 export default function FriendItem(props: FriendItemProps) {
   const { friend, setOpenSheet } = props;
-  const { setIdChatt, setInformationUser } = useChatStore();
+  const { setInformationUser, setMessage } = useChatStore();
   const { data: session } = useSession();
   const handleConversation = async () => {
     try {
@@ -34,20 +35,30 @@ export default function FriendItem(props: FriendItemProps) {
         throw new ResponseError(dataRes.code, dataRes.message);
       }
 
+      const resPonseMsg = await getMessageUser(
+        session?.user.token || null,
+        friend.friend.id,
+      );
+
+      if (resPonseMsg.status === "failed") {
+        throw new ResponseError(dataRes.code, dataRes.message);
+      }
+
+      setMessage(resPonseMsg.data.messages);
       setOpenSheet();
-      setIdChatt(friend.friendshipId);
-      setInformationUser({
-        username: friend.friend.username,
-        email: friend.friend.email,
-        image_url: friend.friend.userDetail?.image_url || null,
-        id: friend.friend.id,
-      });
     } catch (error) {
       if (error instanceof ResponseError) {
         toast.error(error.message);
       } else {
         toast.error("Something went wrong.");
       }
+    } finally {
+      setInformationUser({
+        username: friend.friend.username,
+        email: friend.friend.email,
+        image_url: friend.friend.userDetail?.image_url || null,
+        id: friend.friend.id,
+      });
     }
   };
 

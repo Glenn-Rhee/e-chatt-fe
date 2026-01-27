@@ -3,8 +3,27 @@ import FooterChat from "@/src/components/pages/chats/FooterChat";
 import HeaderChat from "@/src/components/pages/chats/HeaderChat";
 import MainChat from "@/src/components/pages/chats/MainChat";
 import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { connectSocket } from "../lib/socket";
+import { useChatStore } from "../store/useChattActive";
 
 export default function ChatConvo() {
+  const { data: session } = useSession();
+  const { setMessage, message } = useChatStore();
+  useEffect(() => {
+    if (!session?.user.token) return;
+
+    const socket = connectSocket(session.user.token);
+
+    socket.on("message:incoming", (payload) => {
+      setMessage(payload.messages);
+    });
+
+    socket.on("message:outgoing", (payload) => {
+      setMessage(payload.messages);
+    });
+  }, [session?.user.token, message, setMessage]);
   return (
     <motion.div
       initial={{ x: "100%" }}
@@ -15,7 +34,7 @@ export default function ChatConvo() {
     >
       <HeaderChat />
       <FooterChat />
-      <div className="h-full">
+      <div className="h-full overflow-scroll">
         <MainChat />
       </div>
     </motion.div>
