@@ -30,12 +30,14 @@ export const authOptions: NextAuthOptions = {
         });
         const dataRes = (await res.json()) as ResponsePayload<{
           token: string;
+          id: string;
         }>;
         if (dataRes.status === "failed") {
           throw new ResponseError(dataRes.code, dataRes.message);
         }
 
         user.token = dataRes.data.token;
+        user.id = dataRes.data.id;
         return true;
       } catch (error) {
         console.log("Failed send data user!", error);
@@ -45,12 +47,14 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user?.token) {
         token.token = user.token;
+        token.userId = user.id;
       }
 
       return token;
     },
     async session({ session, token }) {
       session.user.token = token.token as string;
+      session.user.userId = token.userId;
       return session;
     },
   },

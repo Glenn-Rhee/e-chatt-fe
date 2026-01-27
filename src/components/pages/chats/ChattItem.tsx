@@ -4,22 +4,72 @@ import ChatConvo from "../../ChattConvo";
 import UserInformation from "./UserInformation";
 import { useChatStore } from "@/src/store/useChattActive";
 import Image from "next/image";
-import { DataConversation } from "@/src/types";
+import { Conversation, DataConversation, ResponsePayload } from "@/src/types";
 import { User2 } from "lucide-react";
 import { getFormatTime } from "@/src/helper/getFormatDate";
+import { baseUrl } from "../profile/EditProfile";
+import ResponseError from "@/src/error/ResponseError";
+import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 interface ChattItemProps {
   dataConv: DataConversation;
 }
 
+export async function getMessageUser(
+  token: string | null,
+  userIdTarget: string,
+) {
+  const res = await fetch(baseUrl + "/message?userIdTarget=" + userIdTarget, {
+    headers: {
+      Authorization: token || "",
+    },
+  });
+
+  const dataRes = (await res.json()) as ResponsePayload<Conversation>;
+  return dataRes;
+}
+
 export default function ChattItem(props: ChattItemProps) {
   const { dataConv } = props;
-  const { setIdChatt, idChatt, isInformationActive } = useChatStore();
+  const {
+    isInformationActive,
+    setInformationUser,
+    informationsUser,
+    setMessage,
+  } = useChatStore();
+  const { data: session } = useSession();
   const lastMessageTime = getFormatTime(new Date(dataConv.message.createdAt));
+
+  const handleOpenConv = async () => {
+    try {
+      const res = await getMessageUser(
+        session?.user.token || null,
+        dataConv.userFrom.id,
+      );
+      if (res.status === "failed") {
+        throw new ResponseError(res.code, res.message);
+      }
+      setMessage(res.data.messages);
+    } catch (error) {
+      if (error instanceof ResponseError) {
+        toast.error(error.message);
+      } else {
+        toast.error("Something went wrong.");
+      }
+    } finally {
+      setInformationUser({
+        id: dataConv.userFrom.id,
+        email: dataConv.userFrom.email,
+        image_url: dataConv.userFrom.userDetail?.image_url || null,
+        username: dataConv.userFrom.username,
+      });
+    }
+  };
   return (
     <>
       <button
-        onClick={() => setIdChatt("123")}
+        onClick={handleOpenConv}
         className="flex items-center justify-between active:bg-neutral-100/40 rounded-lg p-2"
       >
         <div className="flex items-center gap-x-2">
@@ -55,7 +105,7 @@ export default function ChattItem(props: ChattItemProps) {
         </div>
       </button>
       <AnimatePresence initial={false}>
-        {idChatt && <ChatConvo />}
+        {informationsUser && <ChatConvo />}
       </AnimatePresence>
       <AnimatePresence initial={false}>
         {isInformationActive && <UserInformation />}

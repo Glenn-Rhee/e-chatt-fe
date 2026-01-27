@@ -27,7 +27,7 @@ export interface DataNotifications {
 
 export type FriendStatus = "PENDING" | "ACCEPTED" | "REJECTED" | "BLOCKED";
 
-type User = {
+export type User = {
   id: string;
   username: string;
   email: string;
@@ -47,9 +47,15 @@ export interface DataConversation {
   message: Message;
 }
 
-type Message = {
+export type Message = {
+  id: string;
   content: string;
   createdAt: string;
   isRead: boolean;
   senderId: string;
 };
+
+export interface Conversation {
+  id: string;
+  messages: Message[];
+}

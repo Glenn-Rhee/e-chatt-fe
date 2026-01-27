@@ -11,7 +11,7 @@ import { useZustandHydrated } from "@/src/hooks/useZustandHydrated";
 export default function HeaderChat() {
   const [openMenu, setOpenMenu] = useState(false);
   const isClient = useZustandHydrated();
-  const { setIdChatt, setIsInformationActive, informationsUser } =
+  const { setInformationUser, setIsInformationActive, informationsUser } =
     useChatStore();
 
   if (!isClient) return null;
@@ -24,7 +24,7 @@ export default function HeaderChat() {
         )}
       >
         <div className="flex items-center justify-between">
-          <button onClick={() => setIdChatt(null)} type="button">
+          <button onClick={() => setInformationUser(null)} type="button">
             <ArrowLeft className="text-neutral-900" />
           </button>
           <h2 className="text-neutral-900 font-semibold text-lg">Message</h2>
