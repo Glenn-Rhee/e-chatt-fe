@@ -1,9 +1,14 @@
 "use client";
+import ChatConvo from "@/src/components/ChattConvo";
 import ChattItem from "@/src/components/pages/chats/ChattItem";
 import EmptConversations from "@/src/components/pages/chats/EmptConversations";
+import UserInformation from "@/src/components/pages/chats/UserInformation";
 import useGetConversations from "@/src/hooks/useGetConversations";
+import { useChatStore } from "@/src/store/useChattActive";
+import { AnimatePresence } from "framer-motion";
 import { Loader2 } from "lucide-react";
 export default function ChatsPage() {
+  const { informationsUser, isInformationActive } = useChatStore();
   const { isLoading, dataConv } = useGetConversations();
   return (
     <div className="relative h-dvh">
@@ -22,6 +27,12 @@ export default function ChatsPage() {
           ))
         )}
       </main>
+      <AnimatePresence initial={false}>
+        {informationsUser && <ChatConvo />}
+      </AnimatePresence>
+      <AnimatePresence initial={false}>
+        {isInformationActive && <UserInformation />}
+      </AnimatePresence>
     </div>
   );
 }

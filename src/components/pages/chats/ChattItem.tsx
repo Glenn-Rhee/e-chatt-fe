@@ -1,7 +1,4 @@
 "use client";
-import { AnimatePresence } from "framer-motion";
-import ChatConvo from "../../ChattConvo";
-import UserInformation from "./UserInformation";
 import { useChatStore } from "@/src/store/useChattActive";
 import Image from "next/image";
 import { Conversation, DataConversation, ResponsePayload } from "@/src/types";
@@ -33,12 +30,7 @@ export async function getMessageUser(
 
 export default function ChattItem(props: ChattItemProps) {
   const { dataConv } = props;
-  const {
-    isInformationActive,
-    setInformationUser,
-    informationsUser,
-    setMessage,
-  } = useChatStore();
+  const { setInformationUser, setMessage } = useChatStore();
   const { data: session } = useSession();
 
   const handleOpenConv = async () => {
@@ -108,12 +100,6 @@ export default function ChattItem(props: ChattItemProps) {
       ) : (
         <EmptConversations />
       )}
-      <AnimatePresence initial={false}>
-        {informationsUser && <ChatConvo />}
-      </AnimatePresence>
-      <AnimatePresence initial={false}>
-        {isInformationActive && <UserInformation />}
-      </AnimatePresence>
     </>
   );
 }

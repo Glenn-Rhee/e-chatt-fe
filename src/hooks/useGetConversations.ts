@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ResponseError from "../error/ResponseError";
 import toast from "react-hot-toast";
 import { baseUrl } from "../components/pages/profile/EditProfile";
+import { connectSocket } from "../lib/socket";
 
 export default function useGetConversations() {
   const [dataConv, setDataConv] = useState<DataConversation[] | null>(null);
@@ -40,6 +41,16 @@ export default function useGetConversations() {
     };
 
     getConv();
+  }, [session?.user.token]);
+
+  useEffect(() => {
+    if (!session?.user.token) return;
+
+    const socket = connectSocket(session.user.token);
+
+    socket.on("chatts:incoming", (payload) => {
+      setDataConv(payload);
+    });
   }, [session?.user.token]);
   return {
     dataConv,
