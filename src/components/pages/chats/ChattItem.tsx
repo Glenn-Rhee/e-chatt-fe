@@ -34,7 +34,7 @@ export async function getMessageUser(
 
 export default function ChattItem(props: ChattItemProps) {
   const { dataConv } = props;
-  const { setInformationUser, setMessage } = useChatStore();
+  const { setInformationUser, setMessage, setIdChatt } = useChatStore();
   const { data: session } = useSession();
 
   const handleOpenConv = async () => {
@@ -47,6 +47,8 @@ export default function ChattItem(props: ChattItemProps) {
       if (res.status === "failed") {
         throw new ResponseError(res.code, res.message);
       }
+
+      setIdChatt(dataConv.convId);
       setMessage(res.data.messages);
     } catch (error) {
       if (error instanceof ResponseError) {

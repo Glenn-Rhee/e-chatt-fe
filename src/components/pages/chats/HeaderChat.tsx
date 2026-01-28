@@ -20,7 +20,7 @@ export default function HeaderChat() {
     <>
       <header
         className={clsx(
-          "bg-white px-4 pb-3 pt-5 fixed top-0 right-0 left-0 space-y-1",
+          "bg-white px-4 pb-3 pt-5 fixed top-0 right-0 left-0 space-y-1 z-10",
         )}
       >
         <div className="flex items-center justify-between">
