@@ -45,6 +45,7 @@ export interface DataConversation {
   convId: string;
   userFrom: User;
   message: Message;
+  totalUnread: number;
 }
 
 export type Message = {

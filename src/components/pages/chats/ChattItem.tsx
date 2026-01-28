@@ -2,7 +2,7 @@
 import { useChatStore } from "@/src/store/useChattActive";
 import Image from "next/image";
 import { Conversation, DataConversation, ResponsePayload } from "@/src/types";
-import { User2 } from "lucide-react";
+import { Check, CheckCheck, User2 } from "lucide-react";
 import { getFormatTime } from "@/src/helper/getFormatDate";
 import { baseUrl } from "../profile/EditProfile";
 import ResponseError from "@/src/error/ResponseError";
@@ -17,12 +17,16 @@ interface ChattItemProps {
 export async function getMessageUser(
   token: string | null,
   userIdTarget: string,
+  query?: string,
 ) {
-  const res = await fetch(baseUrl + "/message?userIdTarget=" + userIdTarget, {
-    headers: {
-      Authorization: token || "",
+  const res = await fetch(
+    baseUrl + "/message?userIdTarget=" + userIdTarget + `&${query}`,
+    {
+      headers: {
+        Authorization: token || "",
+      },
     },
-  });
+  );
 
   const dataRes = (await res.json()) as ResponsePayload<Conversation>;
   return dataRes;
@@ -38,6 +42,7 @@ export default function ChattItem(props: ChattItemProps) {
       const res = await getMessageUser(
         session?.user.token || null,
         dataConv.userFrom.id,
+        "updateRead=true",
       );
       if (res.status === "failed") {
         throw new ResponseError(res.code, res.message);
@@ -58,6 +63,7 @@ export default function ChattItem(props: ChattItemProps) {
       });
     }
   };
+
   return (
     <>
       {dataConv.message ? (
@@ -83,7 +89,13 @@ export default function ChattItem(props: ChattItemProps) {
               <h6 className="text-neutral-900 font-bold text-sm text-start">
                 {dataConv.userFrom.username}
               </h6>
-              <span className="text-xs block font-semibold text-neutral-300 text-start">
+              <span className="text-xs font-semibold text-neutral-300 text-start flex items-center gap-x-1">
+                {dataConv.message.senderId === session?.user.userId &&
+                  (dataConv.message.isRead ? (
+                    <CheckCheck size={13} />
+                  ) : (
+                    <Check size={13} />
+                  ))}
                 {dataConv.message.content}
               </span>
             </div>
@@ -92,9 +104,11 @@ export default function ChattItem(props: ChattItemProps) {
             <span className="text-xs font-medium text-neutral-500">
               {getFormatTime(new Date(dataConv.message.createdAt))}
             </span>
-            <span className="text-lightblue-500 text-sm font-semibold rounded-md flex items-center justify-center">
-              5
-            </span>
+            {dataConv.message.senderId !== session?.user.userId && (
+              <span className="text-lightblue-500 text-sm font-semibold rounded-md flex items-center justify-center">
+                {dataConv.totalUnread > 0 ? dataConv.totalUnread : ""}
+              </span>
+            )}
           </div>
         </button>
       ) : (

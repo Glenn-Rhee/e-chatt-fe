@@ -66,7 +66,6 @@ export default function FooterChat() {
       if (dataRes.status === "failed") {
         throw new ResponseError(dataRes.code, dataRes.message);
       }
-      console.log("Message sent successfully: ", dataRes);
       setValue("");
     } catch (error) {
       if (error instanceof ResponseError) {

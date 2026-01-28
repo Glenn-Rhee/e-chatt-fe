@@ -34,7 +34,7 @@ export default function ChatConvo() {
     >
       <HeaderChat />
       <FooterChat />
-      <div className="h-full overflow-scroll">
+      <div className="h-[95dvh] overflow-auto">
         <MainChat />
       </div>
     </motion.div>
