@@ -5,7 +5,7 @@ import { baseUrl } from "@/src/components/pages/profile/EditProfile";
 import ShellHeader from "@/src/components/ShellHeader";
 import ResponseError from "@/src/error/ResponseError";
 import { DataFindFriend, ResponsePayload } from "@/src/types";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, User } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -88,13 +88,19 @@ export default function AddFriend() {
               <div key={data.id} className="flex flex-col gap-y-3 mt-2">
                 <div className="flex items-center justify-between active:bg-neutral-100/40 rounded-lg p-2">
                   <div className="flex items-center gap-x-2">
-                    <Image
-                      src={data.userDetail.image_url}
-                      alt="Profile User"
-                      width={40}
-                      height={40}
-                      className="aspect-square rounded-full object-cover"
-                    />
+                    {data.userDetail?.image_url ? (
+                      <Image
+                        src={data.userDetail.image_url}
+                        alt="Profile User"
+                        width={40}
+                        height={40}
+                        className="aspect-square rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-11 h-11 bg-lightblue-50 text-lightblue-500 rounded-full flex items-center justify-center">
+                        <User />
+                      </div>
+                    )}
                     <div className="flex flex-col">
                       <h6 className="text-neutral-900 font-bold text-sm">
                         {data.username}

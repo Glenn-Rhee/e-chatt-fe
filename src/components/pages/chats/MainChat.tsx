@@ -4,11 +4,20 @@ import IncomingBubble from "./IncomingBubble";
 import OutgoingBubble from "./OutgoingBubble";
 import { useSession } from "next-auth/react";
 import { getFormatTime } from "@/src/helper/getFormatDate";
+import { useEffect, useRef } from "react";
 
 export default function MainChat() {
   const { message, informationsUser } = useChatStore();
   const { data: session } = useSession();
+  const bottomRef = useRef<HTMLDivElement | null>(null);
 
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "auto" });
+  }, []);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [message?.length]);
   return (
     <main className="bg-transparent h-full mt-28 space-y-3 py-2 px-3 relative">
       {message && informationsUser && session?.user.userId && (
@@ -36,6 +45,7 @@ export default function MainChat() {
           )}
         </>
       )}
+      <div ref={bottomRef} />
     </main>
   );
 }
