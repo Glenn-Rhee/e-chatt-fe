@@ -7,15 +7,19 @@ import Image from "next/image";
 import { useState } from "react";
 import clsx from "clsx";
 import { useZustandHydrated } from "@/src/hooks/useZustandHydrated";
+import getFormatLastSeen from "@/src/helper/getFormatLastSeen";
 
 export default function HeaderChat() {
   const [openMenu, setOpenMenu] = useState(false);
   const isClient = useZustandHydrated();
-  const { setInformationUser, setIsInformationActive, informationsUser } =
-    useChatStore();
+  const {
+    setInformationUser,
+    setIdChatt,
+    setIsInformationActive,
+    informationsUser,
+  } = useChatStore();
 
   if (!isClient) return null;
-
   return (
     <>
       <header
@@ -27,6 +31,7 @@ export default function HeaderChat() {
           <button
             onClick={() => {
               setInformationUser(null);
+              setIdChatt(null);
             }}
             type="button"
           >
@@ -70,17 +75,21 @@ export default function HeaderChat() {
                 <User2 className="text-white" size={25} />
               </div>
             )}
-            <button
-              onClick={() => setIsInformationActive(true)}
-              className="flex flex-col w-full items-start rounded-sm px-2 py-0.5 active:bg-neutral-50 transition-colors duration-200"
-            >
-              <h6 className="text-neutral-900 font-semibold">
-                {informationsUser?.username}
-              </h6>
-              <span className="text-neutral-500 text-xs font-medium">
-                {informationsUser?.email}
-              </span>
-            </button>
+            {informationsUser && (
+              <button
+                onClick={() => setIsInformationActive(true)}
+                className="flex flex-col w-full items-start rounded-sm px-2 py-0.5 active:bg-neutral-50 transition-colors duration-200"
+              >
+                <h6 className="text-neutral-900 font-semibold">
+                  {informationsUser.username}
+                </h6>
+                <span className="text-neutral-500 text-xs font-medium">
+                  {informationsUser.isOnline
+                    ? "Online"
+                    : getFormatLastSeen(informationsUser.lastSeen)}
+                </span>
+              </button>
+            )}
           </div>
           <div className="flex items-center">
             <button className="text-neutral-900 rounded-full active:bg-neutral-50 p-2 transition-colors duration-200">

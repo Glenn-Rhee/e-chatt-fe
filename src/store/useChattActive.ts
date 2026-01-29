@@ -14,6 +14,8 @@ interface UseChatStore {
     username: string;
     email: string;
     image_url: string | null;
+    isOnline: boolean;
+    lastSeen: string;
   } | null;
   openSheetFriend: boolean;
 

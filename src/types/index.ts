@@ -34,6 +34,8 @@ export type User = {
   userDetail: {
     image_url: string | null;
   } | null;
+  isOnline: boolean;
+  lastSeen: string;
 };
 
 export interface FriendshipUser {
@@ -59,4 +61,10 @@ export type Message = {
 export interface Conversation {
   id: string;
   messages: Message[];
+}
+
+export interface PayloadLastSeen {
+  userId: string;
+  isOnline: boolean;
+  lastSeen?: string;
 }

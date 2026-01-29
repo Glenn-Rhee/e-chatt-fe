@@ -62,6 +62,8 @@ export default function ChattItem(props: ChattItemProps) {
         email: dataConv.userFrom.email,
         image_url: dataConv.userFrom.userDetail?.image_url || null,
         username: dataConv.userFrom.username,
+        isOnline: dataConv.userFrom.isOnline,
+        lastSeen: dataConv.userFrom.lastSeen,
       });
     }
   };
