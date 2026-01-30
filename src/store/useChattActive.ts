@@ -18,7 +18,9 @@ interface UseChatStore {
     lastSeen: string;
   } | null;
   openSheetFriend: boolean;
+  isFocusChattItem: string[] | null;
 
+  setIsFocusChattItem: (v: string[] | null) => void;
   setMessage: (v: Message[] | null) => void;
   setOpenSheetFriend: (v: boolean) => void;
   setIdChatt: (id: string | null) => void;
@@ -41,8 +43,10 @@ export const useChatStore = create<UseChatStore>()(
       isShowMedia: false,
       hydrated: false,
       openSheetFriend: false,
+      isFocusChattItem: null,
 
       // Actions
+      setIsFocusChattItem: (v) => set({ isFocusChattItem: v }),
       setMessage: (v) => set({ message: v }),
       setOpenSheetFriend: (v) => set({ openSheetFriend: v }),
       setInformationUser: (v) => set({ informationsUser: v }),

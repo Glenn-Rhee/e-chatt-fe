@@ -9,6 +9,8 @@ import ResponseError from "@/src/error/ResponseError";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import EmptConversations from "./EmptConversations";
+import { useRef } from "react";
+import clsx from "clsx";
 
 interface ChattItemProps {
   dataConv: DataConversation;
@@ -34,10 +36,41 @@ export async function getMessageUser(
 
 export default function ChattItem(props: ChattItemProps) {
   const { dataConv } = props;
-  const { setInformationUser, setMessage, setIdChatt } = useChatStore();
+  const {
+    setInformationUser,
+    setMessage,
+    setIdChatt,
+    setIsFocusChattItem,
+    isFocusChattItem,
+  } = useChatStore();
   const { data: session } = useSession();
+  const holdRef = useRef<NodeJS.Timeout | null>(null);
+  const isLongPress = useRef(false);
+  const handleOpenConv = async (e: React.MouseEvent) => {
+    if (isLongPress.current) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
 
-  const handleOpenConv = async () => {
+    if (isFocusChattItem) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (isFocusChattItem.length > 1) {
+        const filtered = isFocusChattItem.filter(
+          (fi) => fi !== dataConv.convId,
+        );
+        setIsFocusChattItem(filtered);
+      } else {
+        const finded = isFocusChattItem.find((fi) => fi === dataConv.convId);
+        if (finded) {
+          setIsFocusChattItem(null);
+        } else {
+          setIsFocusChattItem([...isFocusChattItem, dataConv.convId]);
+        }
+      }
+      return;
+    }
     try {
       const res = await getMessageUser(
         session?.user.token || null,
@@ -68,12 +101,43 @@ export default function ChattItem(props: ChattItemProps) {
     }
   };
 
+  const handleStart = () => {
+    isLongPress.current = false;
+    holdRef.current = setTimeout(() => {
+      isLongPress.current = true;
+      if (isFocusChattItem) {
+        const finded = isFocusChattItem.find((fi) => fi === dataConv.convId);
+        if (!finded) {
+          setIsFocusChattItem([...isFocusChattItem, dataConv.convId]);
+        }
+      } else {
+        setIsFocusChattItem([dataConv.convId]);
+      }
+    }, 200);
+  };
+
+  const handleEnd = () => {
+    if (holdRef.current) {
+      clearTimeout(holdRef.current);
+      holdRef.current = null;
+    }
+  };
+
   return (
     <>
       {dataConv.message ? (
         <button
+          onPointerDown={handleStart}
+          onPointerUp={handleEnd}
+          onPointerLeave={handleEnd}
           onClick={handleOpenConv}
-          className="flex items-center justify-between active:bg-neutral-100/40 rounded-lg p-2"
+          className={clsx(
+            "flex items-center justify-between active:bg-neutral-100/40 rounded-lg p-2",
+            {
+              "bg-neutral-100/40":
+                isFocusChattItem && isFocusChattItem.includes(dataConv.convId),
+            },
+          )}
         >
           <div className="flex items-center gap-x-2">
             {dataConv.userFrom.userDetail?.image_url ? (
