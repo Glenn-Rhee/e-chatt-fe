@@ -85,8 +85,10 @@ export default function HeaderChat() {
                 </h6>
                 <span className="text-neutral-500 text-xs font-medium">
                   {informationsUser.isOnline
-                    ? "Online"
-                    : getFormatLastSeen(informationsUser.lastSeen)}
+                    ? informationsUser.isOnline
+                      ? "online"
+                      : getFormatLastSeen(informationsUser.lastSeen)
+                    : informationsUser.email}
                 </span>
               </button>
             )}
