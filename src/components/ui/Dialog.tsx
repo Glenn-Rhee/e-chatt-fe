@@ -1,11 +1,13 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import clsx from "clsx";
 type DialogProps = {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
   className?: string;
+  isCenter?: boolean;
 };
 
 export default function Dialog({
@@ -13,6 +15,7 @@ export default function Dialog({
   onClose,
   children,
   className = "",
+  isCenter,
 }: DialogProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +45,10 @@ export default function Dialog({
       initial={{ opacity: 0 }}
       animate={{ opacity: isOpen ? 1 : 0 }}
       transition={{ duration: 0.1 }}
-      className="fixed inset-0 z-50"
+      className={clsx(
+        "fixed inset-0 z-50",
+        isCenter ? "flex items-center justify-center" : "",
+      )}
     >
       <motion.div
         ref={dialogRef}

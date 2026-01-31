@@ -1,13 +1,6 @@
 "use client";
 import clsx from "clsx";
-import {
-  ArrowLeft,
-  Heart,
-  Plus,
-  Trash2,
-  User2,
-  UsersRound,
-} from "lucide-react";
+import { ArrowLeft, Heart, Plus, User2, UsersRound } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -17,6 +10,7 @@ import ShellHeader from "./ShellHeader";
 import SearchBar from "./ui/SearchBar";
 import NewChattSheet from "./pages/friend/NewChattSheet";
 import { useChatStore } from "../store/useChattActive";
+import DeleteConv from "./DeleteConv";
 
 export default function Header() {
   const [openSearch, setOpenSearch] = useState(false);
@@ -43,9 +37,7 @@ export default function Header() {
               {isFocusChattItem.length}
             </span>
           </div>
-          <button>
-            <Trash2 className="text-white text-2xl" />
-          </button>
+          <DeleteConv />
         </>
       ) : (
         <>
