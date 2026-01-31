@@ -2,11 +2,61 @@
 import { Trash2 } from "lucide-react";
 import Dialog from "./ui/Dialog";
 import { useState } from "react";
+import ResponseError from "../error/ResponseError";
+import toast from "react-hot-toast";
+import { baseUrl } from "./pages/profile/EditProfile";
+import { useChatStore } from "../store/useChattActive";
+import { useSession } from "next-auth/react";
+import { ResponsePayload } from "../types";
 
 export default function DeleteConv() {
   const [isOpen, setIsOpen] = useState(false);
+  const { isFocusChattItem, setIsFocusChattItem } = useChatStore();
+  const { data: session } = useSession();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, 8000);
+  const handleDeleteChatt = async () => {
+    try {
+      if (!isFocusChattItem || isFocusChattItem.length === 0) {
+        throw new ResponseError(403, "Select one chatt firs!");
+      }
+      const res = await fetch(baseUrl + "/chatts", {
+        method: "DELETE",
+        body: JSON.stringify({ idConvs: isFocusChattItem }),
+        headers: {
+          Authorization: session?.user.token || "",
+          "Content-Type": "application/json",
+        },
+        signal: controller.signal,
+      });
 
-  const handleDeleteChatt = () => {};
+      clearTimeout(timeout);
+
+      if (!res.ok) {
+        throw new ResponseError(
+          res.status,
+          "Failed delete chatt! Please try again later!",
+        );
+      }
+
+      const dataRes = (await res.json()) as ResponsePayload;
+      if (dataRes.status === "failed") {
+        throw new ResponseError(dataRes.code, dataRes.message);
+      }
+
+      toast.success(dataRes.message);
+      setIsOpen(false);
+      setIsFocusChattItem(null);
+    } catch (error) {
+      if (error instanceof ResponseError) {
+        toast.error(error.message);
+      } else {
+        toast.error("Something went wrong! Please try again later!");
+      }
+    }
+  };
   return (
     <>
       <button
