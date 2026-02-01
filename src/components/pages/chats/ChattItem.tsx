@@ -8,7 +8,6 @@ import { baseUrl } from "../profile/EditProfile";
 import ResponseError from "@/src/error/ResponseError";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
-import EmptConversations from "./EmptConversations";
 import { useRef } from "react";
 import clsx from "clsx";
 
@@ -125,7 +124,7 @@ export default function ChattItem(props: ChattItemProps) {
 
   return (
     <>
-      {dataConv.message ? (
+      {dataConv.message && (
         <button
           onPointerDown={handleStart}
           onPointerUp={handleEnd}
@@ -179,8 +178,6 @@ export default function ChattItem(props: ChattItemProps) {
             )}
           </div>
         </button>
-      ) : (
-        <EmptConversations />
       )}
     </>
   );
