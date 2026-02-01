@@ -1,18 +1,54 @@
+"use client";
+import { useChatStore } from "@/src/store/useChattActive";
 import clsx from "clsx";
-import React from "react";
+import React, { useRef } from "react";
 
 interface BubbleShellProps {
   bubbleFor: "incoming" | "outgoing";
   children: React.ReactNode;
+  idMsg: string;
 }
 
 export default function BubbleShell(props: BubbleShellProps) {
-  const { bubbleFor, children } = props;
+  const { bubbleFor, children, idMsg } = props;
+  const { isFocusChattItem, setIsFocusChattItem } = useChatStore();
+  const isLongPress = useRef(false);
+  const holdRef = useRef<NodeJS.Timeout | null>(null);
+  const handleStart = () => {
+    console.log("ok");
+    isLongPress.current = false;
+    holdRef.current = setTimeout(() => {
+      isLongPress.current = true;
+      if (isFocusChattItem) {
+        const finded = isFocusChattItem.find((fi) => fi === idMsg);
+        if (!finded) {
+          setIsFocusChattItem([...isFocusChattItem, idMsg]);
+        }
+      } else {
+        setIsFocusChattItem([idMsg]);
+      }
+    }, 200);
+  };
+
+  const handleEnd = () => {
+    if (holdRef.current) {
+      clearTimeout(holdRef.current);
+      holdRef.current = null;
+    }
+  };
+
   return (
     <div
+      onPointerDown={handleStart}
+      onPointerUp={handleEnd}
+      onPointerLeave={handleEnd}
       className={clsx(
-        "w-full px-2 py-1.5 flex items-center bg-neutral-100 rounded-md",
+        "w-full px-2 py-1.5 flex items-center rounded-md",
         bubbleFor === "incoming" ? "justify-start" : "justify-end",
+        {
+          "border-neutral-100":
+            isFocusChattItem && isFocusChattItem.includes(idMsg),
+        },
       )}
     >
       {children}

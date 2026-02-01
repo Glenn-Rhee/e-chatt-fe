@@ -30,6 +30,7 @@ export default function MainChat() {
           {message.map((msg) =>
             msg.senderId === session.user.userId ? (
               <OutgoingBubble
+                idMsg={msg.id}
                 isRead={msg.isRead}
                 key={msg.id}
                 text={msg.content}
@@ -37,6 +38,7 @@ export default function MainChat() {
               />
             ) : (
               <IncomingBubble
+                idMsg={msg.id}
                 key={msg.id}
                 text={msg.content}
                 time={getFormatTime(new Date(msg.createdAt))}
