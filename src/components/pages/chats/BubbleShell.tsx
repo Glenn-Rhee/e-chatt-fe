@@ -15,7 +15,6 @@ export default function BubbleShell(props: BubbleShellProps) {
   const isLongPress = useRef(false);
   const holdRef = useRef<NodeJS.Timeout | null>(null);
   const handleStart = () => {
-    console.log("ok");
     isLongPress.current = false;
     holdRef.current = setTimeout(() => {
       isLongPress.current = true;
@@ -37,16 +36,42 @@ export default function BubbleShell(props: BubbleShellProps) {
     }
   };
 
+  const handleBubbleClick = (e: React.MouseEvent) => {
+    if (isLongPress.current) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    if (isFocusChattItem) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (isFocusChattItem.length > 1) {
+        const filtered = isFocusChattItem.filter((fi) => fi !== idMsg);
+        setIsFocusChattItem(filtered);
+      } else {
+        const finded = isFocusChattItem.find((fi) => fi === idMsg);
+        if (finded) {
+          setIsFocusChattItem(null);
+        } else {
+          setIsFocusChattItem([...isFocusChattItem, idMsg]);
+        }
+      }
+      return;
+    }
+  };
+
   return (
     <div
       onPointerDown={handleStart}
       onPointerUp={handleEnd}
       onPointerLeave={handleEnd}
+      onClick={handleBubbleClick}
       className={clsx(
         "w-full px-2 py-1.5 flex items-center rounded-md",
         bubbleFor === "incoming" ? "justify-start" : "justify-end",
         {
-          "border-neutral-100":
+          "bg-neutral-100":
             isFocusChattItem && isFocusChattItem.includes(idMsg),
         },
       )}
