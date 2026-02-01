@@ -19,7 +19,7 @@ export default function MainChat() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [message?.length]);
   return (
-    <main className="bg-transparent h-full mt-28 space-y-3 py-2 px-3 relative">
+    <main className="bg-transparent h-full mt-28 space-y-1 py-2 px-3 relative">
       {message && informationsUser && session?.user.userId && (
         <>
           <div className="w-full my-2 flex justify-center sticky top">
