@@ -44,13 +44,18 @@ export default function BubbleShell(props: BubbleShellProps) {
     }
 
     if (isFocusChattItem) {
+      const finded = isFocusChattItem.find((fi) => fi === idMsg);
+
       e.preventDefault();
       e.stopPropagation();
       if (isFocusChattItem.length > 1) {
-        const filtered = isFocusChattItem.filter((fi) => fi !== idMsg);
-        setIsFocusChattItem(filtered);
+        if (finded) {
+          const filtered = isFocusChattItem.filter((fi) => fi !== idMsg);
+          setIsFocusChattItem(filtered);
+        } else {
+          setIsFocusChattItem([...isFocusChattItem, idMsg]);
+        }
       } else {
-        const finded = isFocusChattItem.find((fi) => fi === idMsg);
         if (finded) {
           setIsFocusChattItem(null);
         } else {

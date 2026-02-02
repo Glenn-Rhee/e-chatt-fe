@@ -53,15 +53,19 @@ export default function ChattItem(props: ChattItemProps) {
     }
 
     if (isFocusChattItem) {
+      const finded = isFocusChattItem.find((fi) => fi === dataConv.convId);
       e.preventDefault();
       e.stopPropagation();
       if (isFocusChattItem.length > 1) {
-        const filtered = isFocusChattItem.filter(
-          (fi) => fi !== dataConv.convId,
-        );
-        setIsFocusChattItem(filtered);
+        if (finded) {
+          const filtered = isFocusChattItem.filter(
+            (fi) => fi !== dataConv.convId,
+          );
+          setIsFocusChattItem(filtered);
+        } else {
+          setIsFocusChattItem([...isFocusChattItem, dataConv.convId]);
+        }
       } else {
-        const finded = isFocusChattItem.find((fi) => fi === dataConv.convId);
         if (finded) {
           setIsFocusChattItem(null);
         } else {
