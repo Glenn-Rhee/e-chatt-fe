@@ -5,6 +5,7 @@ import OutgoingBubble from "./OutgoingBubble";
 import { useSession } from "next-auth/react";
 import { getFormatTime } from "@/src/helper/getFormatDate";
 import { useEffect, useRef } from "react";
+import groupMessageByDate from "@/src/helper/groupMessageByDate";
 
 export default function MainChat() {
   const { message, informationsUser } = useChatStore();
@@ -18,6 +19,10 @@ export default function MainChat() {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [message?.length]);
+
+  const groupedMessages = groupMessageByDate(message);
+
+  console.log(groupedMessages);
   return (
     <main className="bg-transparent h-full mt-28 space-y-1 py-2 px-3 relative">
       {message && informationsUser && session?.user.userId && (
