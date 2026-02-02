@@ -27,8 +27,8 @@ export default function groupMessageByDate(messages: Message[] | null) {
   const sortedGrouped: Record<string, Message[]> = {};
   Object.keys(grouped)
     .sort((a, b) => {
-      if (a === "Today") return -1;
-      if (b === "Today") return 1;
+      if (a === "Today") return 1;
+      if (b === "Today") return -1;
       if (a === "Yesterday") return -1;
       if (b === "Yesterday") return 1;
       return new Date(b).getTime() - new Date(a).getTime();
