@@ -15,6 +15,11 @@ import { useState } from "react";
 import clsx from "clsx";
 import { useZustandHydrated } from "@/src/hooks/useZustandHydrated";
 import getFormatLastSeen from "@/src/helper/getFormatLastSeen";
+import ResponseError from "@/src/error/ResponseError";
+import toast from "react-hot-toast";
+import { baseUrl } from "../profile/EditProfile";
+import { useSession } from "next-auth/react";
+import { ResponsePayload } from "@/src/types";
 
 export default function HeaderChat() {
   const [openMenu, setOpenMenu] = useState(false);
@@ -27,8 +32,37 @@ export default function HeaderChat() {
     isFocusChattItem,
     setIsFocusChattItem,
   } = useChatStore();
+  const { data: session } = useSession();
 
   if (!isClient) return null;
+
+  async function handleDeleteMessage() {
+    try {
+      const res = await fetch(baseUrl + "/messages", {
+        method: "DELETE",
+        headers: {
+          Authorization: session?.user.token || "",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ idMsgs: isFocusChattItem }),
+      });
+
+      const dataRes = (await res.json()) as ResponsePayload;
+      if (dataRes.status === "failed") {
+        throw new ResponseError(dataRes.code, dataRes.message);
+      }
+
+      toast.success(dataRes.message);
+    } catch (error) {
+      if (error instanceof ResponseError) {
+        toast.error(error.message);
+      } else {
+        toast.error("Something went wrong! Please try again later.");
+      }
+    } finally {
+      setIsFocusChattItem(null);
+    }
+  }
   return (
     <>
       <header
@@ -50,7 +84,10 @@ export default function HeaderChat() {
               <button className="text-neutral-900">
                 <StarIcon />
               </button>
-              <button className="text-neutral-900">
+              <button
+                onClick={handleDeleteMessage}
+                className="text-neutral-900"
+              >
                 <Trash2 />
               </button>
             </div>
