@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 import { baseUrl } from "../profile/EditProfile";
 import { useSession } from "next-auth/react";
 import { ResponsePayload } from "@/src/types";
+import DeleteButton from "../../DeleteButton";
 
 export default function HeaderChat() {
   const [openMenu, setOpenMenu] = useState(false);
@@ -33,6 +34,7 @@ export default function HeaderChat() {
     setIsFocusChattItem,
   } = useChatStore();
   const { data: session } = useSession();
+  const [dialogDelete, setDialogDelete] = useState(false);
 
   if (!isClient) return null;
 
@@ -84,12 +86,14 @@ export default function HeaderChat() {
               <button className="text-neutral-900">
                 <StarIcon />
               </button>
-              <button
-                onClick={handleDeleteMessage}
-                className="text-neutral-900"
+              <DeleteButton
+                usedFor="Message"
+                isOpen={dialogDelete}
+                setIsOpen={setDialogDelete}
+                onDelete={handleDeleteMessage}
               >
-                <Trash2 />
-              </button>
+                <Trash2 className="text-neutral-900" />
+              </DeleteButton>
             </div>
           </div>
         ) : (

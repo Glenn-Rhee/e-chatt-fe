@@ -98,6 +98,7 @@ export default function Header() {
             </span>
           </div>
           <DeleteConv
+            usedFor="Chatt"
             onDelete={handleDeleteChatt}
             isOpen={isDialogDeleteOpen}
             setIsOpen={setIsDialogDeleteOpen}

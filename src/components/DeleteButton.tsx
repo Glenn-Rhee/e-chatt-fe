@@ -7,10 +7,11 @@ interface DeleteButtonProps {
   onDelete: () => void;
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  usedFor: string;
 }
 
 export default function DeleteButton(props: DeleteButtonProps) {
-  const { children, onDelete, isOpen, setIsOpen } = props;
+  const { children, onDelete, isOpen, setIsOpen, usedFor } = props;
 
   return (
     <>
@@ -28,11 +29,11 @@ export default function DeleteButton(props: DeleteButtonProps) {
         className="w-85 mx-auto my-auto shadow-md px-4 py-3 space-y-4"
       >
         <h4 className="text-xl font-semibold text-neutral-900">
-          Delete this chat?
+          Delete this {usedFor}?
         </h4>
         <div className="w-full flex items-center justify-evenly font-semibold text-blue-500">
           <button onClick={() => setIsOpen(false)}>Cancel</button>
-          <button onClick={onDelete}>Delete Chatt</button>
+          <button onClick={onDelete}>Delete {usedFor}</button>
         </div>
       </Dialog>
     </>
